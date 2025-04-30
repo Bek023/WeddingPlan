@@ -1,0 +1,68 @@
+.block {
+    width: 100vw;
+    height: 100vh;
+    background: pink;
+    padding: 50px;
+}
+
+.block h1,
+.block p,
+.block li {
+    margin: 0 0;
+    padding: 10px 0;
+}
+
+.block ul {
+    margin: 0 0 0 30px;
+}
+
+.bgBlock {
+    display: flex;
+    gap: 20px;
+    font-size: 25px;
+    background: rgb(251, 238, 238);
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.bgBlock img {
+    width: 90%;
+    height: 100%;
+    border-radius: 0 10% 10% 0;
+}
+
+.SignBlock {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 20px;
+}
+
+.SignBlock img {
+    width: 90%;
+
+}
+
+.formBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.btns button {
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: rgb(221, 173, 230);
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
