@@ -1,0 +1,41 @@
+.formBlock{
+    font-size: 25px;
+}
+.formBlock h1 , .formBlock p, .formBlock li{
+    margin-bottom: 15px;
+    animation: fadeInUp 1.2s ease-out;
+}
+.formBlock ul{
+    margin-left: 40px;
+} 
+
+.btns {
+    display: flex;
+    gap: 20px;
+}
+.btns button{
+    width: 150px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background: #d7bde2 ;
+    color: aliceblue;
+    font-size: large;
+    transition: transform 0.3s ease-in-out ;
+    animation: fadeInUp 1.2s ease-out;
+}
+.btns button:hover{
+    transform: scale(1.1);
+}
+
+
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

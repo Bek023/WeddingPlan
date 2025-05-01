@@ -1,0 +1,61 @@
+.block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInUp 1.2s ease-out;
+}
+
+
+.inp {
+    width: 220px;
+}
+
+.inp:focus,
+.inp:hover {
+    border: 3px solid pink;
+}
+
+.inp2 {
+    width: 220px;
+}
+
+.inp2:focus{
+    border: 3px solid pink !important;
+}
+.inp2:hover {
+    outline: 3px solid pink !important;
+}
+
+
+.btn {
+    width: 100px;
+    height: 40px;
+    font-size: large;
+}
+
+.btn:hover {
+    border: 3px solid pink !important;
+    color: pink !important;
+}
+
+.block p {
+    margin: 0 auto;
+    font-size: 16px;
+    color: rgba(128, 128, 128, 0.906);
+
+}
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

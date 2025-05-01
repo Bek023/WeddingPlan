@@ -1,42 +1,36 @@
-import image from '../assets/register-first-img.jpg';
-import h_shape from '../assets/f-shape-1.png';
-import f_shape from '../assets/f-shape-2.png';
+import image from '../assets/images/register-first-img.jpg';
+import h_shape from '../assets/images/f-shape-1.png';
+import f_shape from '../assets/images/f-shape-2.png';
+import flowers1 from "../assets/images/shape1.png";
+import flowers2 from "../assets/images/shape4.png";
+import flowers3 from "../assets/images/shape-2-bottom.png";
+import flowers4 from "../assets/images/shape3-left-bottom.png";
 import style from './style/Sign.module.css';
+import { useAuthComponents } from '../Utils/zustand';
 
 
 export default function SignPage({ }) {
+    const { comp} = useAuthComponents();
+
+    
     return (
         <>
             <section className={style.block}>
                 <div className={style.bgBlock}>
-                    <div className={style.ingBlock}>
-                        <img src={image} />
-                    </div>
-                    <div className={style.SignBlock}>
-                        <img src={h_shape} alt="" />
-                        <div className={style.formBlock}>
-
-                            <h1>To‘yingizga birinchi qadam – chiroyli taklifnoma bilan!</h1>
-
-                            <p>Biz bilan birga siz:</p>
-
-                            <ul>
-                                <li>Oson va tez taklifnoma yaratasiz</li>
-                                <li>Ko‘plab dizaynlarni tanlaysiz</li>
-                                <li>Har bir mehmonni quvontirasiz!</li>
-                            </ul>
-
-
-
-                            <p>
-                                Davom etish uchun hisobingizga kiring yoki yangi foydalanuvchi sifatida ro‘yxatdan o‘ting
-                            </p>
+                    <img src={flowers1} alt="" className={style.flower1} />
+                    <img src={flowers2} alt="" className={style.flower2} />
+                    <img src={flowers3} alt="" className={style.flower3} />
+                    <img src={flowers4} alt="" className={style.flower4} />
+                    <div className={style.innerBlock}>
+                        <div className={style.ingBlock}>
+                            <img src={image} />
                         </div>
-                        <div className={style.btns}>
-                            <button>Ro`yxatdan o`tish</button>
-                            <button>Kirish</button>
+                        <div className={style.SignBlock}>
+                            <img src={h_shape} alt="" />
+                            {true && comp.component()}
+
+                            <img src={f_shape} alt="" />
                         </div>
-                        <img src={f_shape} alt="" />
                     </div>
                 </div>
             </section>

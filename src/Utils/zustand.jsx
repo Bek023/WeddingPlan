@@ -36,6 +36,23 @@ import axios from './Axios';
 //     getAllComponents: () => componentList,
 // }));
 
+// components for auth
+import SignAbout from '../Components/SignAbout';
+import SignIn from '../Components/SignIn';
+
+const authComponents = [
+    { id: 1, title: 'About', component: () => <SignAbout /> },
+    { id: 2, title: 'Login', component: () => <SignIn /> },
+];
+const useAuthComponents = create((set) => ({
+    comp: authComponents[0],
+    setComp: (index) => {
+        if (authComponents[index]) {
+            set({ comp: authComponents[index] });
+        }
+    },
+    getAllComponents: () => authComponents,
+}));
 
 
 
@@ -88,6 +105,7 @@ const useModal = create((set, get) => ({
 export {
     useData,
     //  useComponents, 
+    useAuthComponents,
     useModal
 };
 

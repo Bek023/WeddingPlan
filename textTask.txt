@@ -1,0 +1,52 @@
+To make yourweddinginvitationwebsitemoreengagingandattractcustomerattention,youcanusesubtleandelegantanimationsthatfittheromanticandclassytheme.Here'sabreakdownofwhereandwhatanimationsyoucanapply:
+
+---
+
+### 🎯 Main Animation Targets & Suggestions:
+
+#### 1. Text Headline:
+
+- Animation: Fade-inwithslightupwardmotion(fadeInUp)
+-Why: Makes the heading feel elegant and draws initial attention.
+-Trigger: On page load.
+
+#### 2. Buttons (Register & Sign In):
+
+- Animation: Pulseorscale-upslightlyonhover.
+-Why: Encourages interaction and improves click-through rate.
+-Trigger: On hover.
+
+#### 3. Social Media Icons:
+
+- Animation: Bounceorsubtlerotateonhover.
+-Why: Adds charm without overwhelming the page.
+-Trigger: On hover.
+
+#### 4. Decorative Corners (Flowers):
+
+- Animation: Veryslowfloatingeffectorsoftblinkingglow.
+-Why: Adds a dreamy, romantic touch.
+-Trigger: Continuous loop (very slow, 10–15s cycle).
+
+#### 5. Bride & Groom Image (Left side):
+
+- Animation: Parallaxscrollorslowzoom-in.
+-Why: Gives depth and movement to the hero section.
+-Trigger: On scroll or on load.
+
+#### 6. Bottom Decoration (Curvy Lines):
+
+- Animation: Draw-oneffect(likeit'sbeingsketchedlive).
+-Why: Adds a classy transition.
+-Trigger: On page load.
+
+---
+
+### 🛠 Tools You Can Use
+
+- CSS animations:@keyframes,transition,andanimation
+-JavaScriptlibraries: [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/), [GSAP](https://greensock.com/gsap/), [Lottie](https://lottiefiles.com/) for vector-based animated elements
+
+---
+
+Would you like me to generate example CSS or code snippets for these animations?
