@@ -1,17 +1,26 @@
 import React, { useRef } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import { useAuthComponents } from '../Utils/zustand';
 import style from "./Style/SignIn.module.css";
-const onFinish = values => {
-    console.log('Success:', values);
-};
-const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-};
+import users from '../Utils/data';
+
+
 function SignIn() {
     const { setComp } = useAuthComponents();
+    const formRef = useRef(null);
 
+    const onFinish = () => {
+        const { username, password } = formRef.current.getFieldsValue();
+        if(username == users[0].name && password == users[0].password){
+            message.success("Siz muvaffaqiyatli kirdingiz!");
 
+        } else {
+            message.error("Noto'g'ri username yoki parol!");
+        }
+    }
+    const onFinishFailed = () => {
+        message.error("Iltimos barcha maydonlarni to'ldiring!");
+    }
     return (
         <Form
             name="basic"
@@ -23,6 +32,7 @@ function SignIn() {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             className={style.block}
+            ref={formRef}
         >
             <Form.Item
                 name="username"
@@ -46,7 +56,7 @@ function SignIn() {
                     Kirish
                 </Button>
             </Form.Item>
-            <p>Agar accountingiz bo`lmasa ro`yxatdan o`ting. <span onClick={() => setComp(0)} style={{ cursor: 'pointer', textDecoration: "underline" }}>Ro`yxatdan o`tish</span></p>
+            <p>Agar accountingiz bo`lmasa ro`yxatdan o`ting. <span onClick={() => setComp(2)} style={{ cursor: 'pointer', textDecoration: "underline" }}>Ro`yxatdan o`tish</span></p>
         </Form>
     );
 }

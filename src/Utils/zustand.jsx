@@ -39,10 +39,12 @@ import axios from './Axios';
 // components for auth
 import SignAbout from '../Components/SignAbout';
 import SignIn from '../Components/SignIn';
+import SignUp from '../Components/SignUp';
 
 const authComponents = [
     { id: 1, title: 'About', component: () => <SignAbout /> },
     { id: 2, title: 'Login', component: () => <SignIn /> },
+    { id: 3, title: 'SignUp', component: () => <SignUp /> },
 ];
 const useAuthComponents = create((set) => ({
     comp: authComponents[0],

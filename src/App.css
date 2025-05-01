@@ -25,7 +25,14 @@ input:hover {
     width: 220px;
 }
 
+.inp {
+    width: 220px;
+}
 
+.inp:focus,
+.inp:hover {
+    border: 3px solid pink;
+}
 .ant-input-password:hover{
     border: 3px solid pink !important;
 }

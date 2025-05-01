@@ -30,7 +30,7 @@ export default function SignAbout({ }) {
                 </p>
             </div>
             <div className={style.btns}>
-                <button >Ro`yxatdan o`tish</button>
+                <button onClick={()=>setComp(2)}>Ro`yxatdan o`tish</button>
                 <button onClick={()=>setComp(1)}>Kirish</button>
             </div>
         </>
