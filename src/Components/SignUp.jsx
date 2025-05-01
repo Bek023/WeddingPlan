@@ -3,10 +3,13 @@ import {
     Button,
     Form,
     Input,
+    Radio,
+    Image,
 } from 'antd';
 import { useState } from 'react';
 import style from './Style/SignUp.module.css';
 import users from '../Utils/data';
+import img1 from '../assets/images/register-first-img.jpg';
 import { useAuthComponents } from '../Utils/zustand';
 
 
@@ -41,7 +44,7 @@ const infoPassword = 'Parol 4tadan kam bulmasligi kerak!'
 
 
 const SignUp = () => {
-    const {setComp} = useAuthComponents();
+    const { setComp } = useAuthComponents();
     const [feadback, setFeadback] = useState(false);
     const [userData, setUserData] = useState(true);
     const [user, setUser] = useState(false);
@@ -81,9 +84,9 @@ const SignUp = () => {
         }
         setUser(true);
     };
-    
 
-console.log(form.getFieldValue('password'));
+
+    // console.log(form.getFieldValue('password'));
 
     return (
         <Form
@@ -94,6 +97,7 @@ console.log(form.getFieldValue('password'));
             initialValues={{ residence: ['zhejiang', 'hangzhou', 'xihu'], prefix: '86' }}
             style={{ maxWidth: 600 }}
             scrollToFirstError
+            className={style.block}
         >
             <Form.Item
                 name="username"
@@ -146,34 +150,69 @@ console.log(form.getFieldValue('password'));
 
             <Form.Item
                 name="confirm"
-                label="Parolni tasdiqlash"
+                label="Confirm Password"
                 dependencies={['password']}
                 hasFeedback
                 rules={[
                     {
                         required: true,
-                        message: 'Iltimos parolni tasdiqlang!',
+                        message: 'Please confirm your password!',
                     },
                     ({ getFieldValue }) => ({
                         validator(_, value) {
                             if (!value || getFieldValue('password') === value) {
                                 return Promise.resolve();
                             }
-                            return Promise.reject(new Error('Siz kiritgan parollar bir xil emas!'));
+                            return Promise.reject(new Error('The new password that you entered do not match!'));
                         },
                     }),
                 ]}
             >
                 <Input.Password className='inp' />
             </Form.Item>
-
+                <Radio.Group name="radiogroup" defaultValue={1} style={{ marginLeft: 20 }} className={style.radio}
+                options={[
+                    {
+                    value:"one",
+                    label:(
+                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
+                    )
+                },
+                    {
+                    value:"two",
+                    label:(
+                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
+                    )
+                },
+                    {
+                    value:"three",
+                    label:(
+                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
+                    )
+                },
+                    {
+                    value:"four",
+                    label:(
+                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
+                    )
+                },
+                    {
+                    value:"five",
+                    label:(
+                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
+                    )
+                },
+            ]}
+                /> 
             <Form.Item {...tailFormItemLayout}>
                 <Button htmlType="submit" >
                     Ro`yxatdan o`tish
                 </Button>
             </Form.Item>
+            <p style={{ marginLeft: "40%" }}> Agar accountingiz bo`lsa <span onClick={() => setComp(1)} style={{ cursor: 'pointer', textDecoration: "underline" }}>Tizimga kiring</span></p>
+
         </Form >
-            
+
     );
 };
 
