@@ -1,7 +1,4 @@
 .block {
-    height: 100vh;
-    width: 100vw;
-    background-color: pink;
     padding: 50px;
 }
 
@@ -12,8 +9,8 @@
     height: 100%;
     background: whitesmoke;
     border-radius: 20px;
+    margin: auto;
 }
-
 
 .flower1,
 .flower2,
@@ -28,7 +25,6 @@
 }
 
 .flower1 {
-
     top: 0;
     animation-name: floatAnim2;
 }
@@ -80,20 +76,16 @@
     filter: brightness(1.05) contrast(1.1);
 }
 
-
 .SignBlock {
-    height: 80%;
+    height: inherit;
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* align-items: center; */
+    align-items:center;
 }
 
-
-
-
-
+/* ANIMATIONS */
 @keyframes floatAnim1 {
     0% {
         transform: translateY(0px) rotate(0deg);
@@ -131,5 +123,56 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .innerBlock {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .ingBlock {
+       display: none;
+    }
+
+    .SignBlock {
+        width: 100%;
+    }
+
+    .flower1,
+    .flower2,
+    .flower3,
+    .flower4 {
+        width: 60px;
+    }
+}
+
+@media (max-width: 600px) {
+    .block {
+        padding: 20px;
+    }
+
+    .bgBlock {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .innerBlock {
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .ingBlock {
+        display: none;
+    }
+
+    .flower1,
+    .flower2,
+    .flower3,
+    .flower4 {
+        width: 40px;
     }
 }

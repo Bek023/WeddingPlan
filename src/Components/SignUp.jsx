@@ -1,10 +1,11 @@
-
+import axios from '../Utils/Axios';
 import {
     Button,
     Form,
     Input,
     Radio,
     Image,
+    message,
 } from 'antd';
 import { useState } from 'react';
 import style from './Style/SignUp.module.css';
@@ -50,8 +51,27 @@ const SignUp = () => {
     const [user, setUser] = useState(false);
 
     const [form] = Form.useForm();
-    const onFinish = values => {
-        setComp(1);
+
+    const onFinish = async (values) => {
+        const payload = {
+            username: values.username,
+            fullname: values.fullname,
+            email: values.email,
+            password: values.password,
+            template_name: values.radiogroup
+        };
+
+        try {
+            const response = await axios.post('/register', payload);
+            console.log('Foydalanuvchi ro‘yxatdan o‘tdi:', response.data);
+            setComp(1);
+        } catch (error) {
+            const msg = error.response?.data?.message || "Ro`yxatdan o`tish xatoligi!";
+            message.error(msg);
+            console.error('Ro‘yxatdan o‘tishda xatolik:', error.response?.data || error.message);
+            
+
+        }
     };
     const onChangePass = e => {
         const { value } = e.target;
@@ -94,25 +114,26 @@ const SignUp = () => {
             form={form}
             name="register"
             onFinish={onFinish}
-            initialValues={{ residence: ['zhejiang', 'hangzhou', 'xihu'], prefix: '86' }}
+            initialValues={{ radiogroup: 'one' }}
             style={{ maxWidth: 600 }}
             scrollToFirstError
             className={style.block}
         >
             <Form.Item
+                name="fullname"
+                label="Full Name"
+                rules={[{ required: true, message: 'Iltimos to‘liq ismingizni kiriting!' }]}
+            >
+                <Input className='inp' />
+            </Form.Item>
+            <Form.Item
                 name="username"
                 label="Username"
-                rules={[{ required: true, message: null }]}
+                rules={[{ required: true, message: "username kiriting" }]}
                 onChange={onChangeUser}
             >
                 <Input className='inp' />
             </Form.Item>
-
-            <div className={style.info}>
-
-                {user &&
-                    (userData ? <p style={{ width: 200, background: 'white', marginTop: 15, textAlign: 'center' }}>✅{infoUsername}</p> : <p style={{ width: 200, background: 'white', marginTop: 15, textAlign: 'center' }}>❌{infoUsername}</p>)}
-            </div>
 
             <Form.Item
                 name="email"
@@ -145,77 +166,51 @@ const SignUp = () => {
 
             >
                 <Input.Password className='inp' />
-                {feadback ? <p style={{ width: 200, background: 'white', marginTop: 15, textAlign: "center" }}>✅ {infoPassword}</p> : <p style={{ width: 200, background: 'white', marginTop: 15, textAlign: "center" }}>❌ {infoPassword}</p>}
             </Form.Item>
+            {feadback ? <p style={{ width: 200, background: 'white', marginTop: 15, textAlign: "center" }}>✅ {infoPassword}</p> : <p style={{ width: 200, background: 'white', marginTop: 15, textAlign: "center" }}>❌ {infoPassword}</p>}
 
             <Form.Item
-                name="confirm"
-                label="Confirm Password"
-                dependencies={['password']}
-                hasFeedback
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please confirm your password!',
-                    },
-                    ({ getFieldValue }) => ({
-                        validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
-                                return Promise.resolve();
-                            }
-                            return Promise.reject(new Error('The new password that you entered do not match!'));
-                        },
-                    }),
-                ]}
+                name="radiogroup"
+                label="Shablon tanlang"
+                rules={[{ required: true, message: 'Iltimos shablonni tanlang!' }]}
             >
-                <Input.Password className='inp' />
+                <Radio.Group
+                    style={{ marginLeft: 20 }}
+                    className={style.radio}
+                    options={[
+                        {
+                            value: "one",
+                            label: <Image src={img1} width={100} height={100} style={{ borderRadius: 10, marginRight: 10 }} />,
+                        },
+                        {
+                            value: "two",
+                            label: <Image src={img1} width={100} height={100} style={{ borderRadius: 10, marginRight: 10 }} />,
+                        },
+                        {
+                            value: "three",
+                            label: <Image src={img1} width={100} height={100} style={{ borderRadius: 10, marginRight: 10 }} />,
+                        },
+                        {
+                            value: "four",
+                            label: <Image src={img1} width={100} height={100} style={{ borderRadius: 10, marginRight: 10 }} />,
+                        },
+                        {
+                            value: "five",
+                            label: <Image src={img1} width={100} height={100} style={{ borderRadius: 10, marginRight: 10 }} />,
+                        },
+                    ]}
+                />
             </Form.Item>
-                <Radio.Group name="radiogroup" defaultValue={1} style={{ marginLeft: 20 }} className={style.radio}
-                options={[
-                    {
-                    value:"one",
-                    label:(
-                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
-                    )
-                },
-                    {
-                    value:"two",
-                    label:(
-                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
-                    )
-                },
-                    {
-                    value:"three",
-                    label:(
-                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
-                    )
-                },
-                    {
-                    value:"four",
-                    label:(
-                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
-                    )
-                },
-                    {
-                    value:"five",
-                    label:(
-                        <Image src={img1} width={100} height={100}  style={{ borderRadius: 10, marginRight: 10 }} />
-                    )
-                },
-            ]}
-                /> 
+
             <Form.Item {...tailFormItemLayout}>
-                <Button htmlType="submit" >
+                <Button htmlType="submit" style={{ marginTop: 30 }}>
                     Ro`yxatdan o`tish
                 </Button>
             </Form.Item>
-            <p style={{ marginLeft: "40%" }}> Agar accountingiz bo`lsa <span onClick={() => setComp(1)} style={{ cursor: 'pointer', textDecoration: "underline" }}>Tizimga kiring</span></p>
+            <p> Agar accountingiz bo`lsa <span onClick={() => setComp(1)} style={{ cursor: 'pointer', textDecoration: "underline" }}>Tizimga kiring</span></p>
 
         </Form >
 
     );
 };
-
-
-
 export default SignUp;

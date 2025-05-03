@@ -2,32 +2,59 @@ import React, { useRef } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import { useAuthComponents } from '../Utils/zustand';
 import style from "./Style/SignIn.module.css";
-import users from '../Utils/data';
-
+import axios from "../Utils/Axios";
 
 function SignIn() {
     const { setComp } = useAuthComponents();
     const formRef = useRef(null);
 
-    const onFinish = () => {
+    const onFinish = async () => {
         const { username, password } = formRef.current.getFieldsValue();
-        if(username == users[0].name && password == users[0].password){
-            message.success("Siz muvaffaqiyatli kirdingiz!");
+        try {
+            const response = await axios.post("/login", {
+                username,
+                password,
+            });
 
-        } else {
-            message.error("Noto'g'ri username yoki parol!");
+            const { remember_token, user } = response.data;
+
+            if (remember_token) {
+                localStorage.setItem("remember_token", remember_token);
+                localStorage.setItem("user", JSON.stringify(user));
+            }
+
+            message.success("Muvaffaqiyatli tizimga kirdingiz!");
+            console.log("Login success:", response.data);
+            
+            setComp(0);
+        } catch (error) {
+            const msg = error.response?.data?.message || "Login xatoligi!";
+            message.error(msg);
+            console.error("Login error:", error.response?.data || error.message);
         }
-    }
+    };
+
+    // const onFinish = async ()=>{
+    //     try{
+    //         const res = await axios.get('/users');
+    //         console.log(res);
+    //     }catch{
+    //         const msg = error.response?.data?.message || "Login xatoligi!";
+    //                 message.error(msg);
+    //                 console.error("Login error:", error.response?.data || error.message);
+    //     }
+    // };
+
     const onFinishFailed = () => {
         message.error("Iltimos barcha maydonlarni to'ldiring!");
-    }
+    };
+
     return (
         <Form
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -36,19 +63,16 @@ function SignIn() {
         >
             <Form.Item
                 name="username"
-                rules={[{ required: true, message: 'Iltimos usernameni kiriring!' }]}
-
-
+                rules={[{ required: true, message: 'Iltimos usernameni kiriting!' }]}
             >
-                <Input  className={style.inp} placeholder='username' />
+                <Input className={style.inp} placeholder='Username' />
             </Form.Item>
 
             <Form.Item
                 name="password"
-                rules={[{ required: true, message: 'Iltimos parolni kiriring!' }]}
-             
+                rules={[{ required: true, message: 'Iltimos parolni kiriting!' }]}
             >
-                <Input.Password   className='inp2' placeholder='parol' />
+                <Input.Password className='inp2' placeholder='Parol' />
             </Form.Item>
 
             <Form.Item label={null}>
@@ -56,8 +80,15 @@ function SignIn() {
                     Kirish
                 </Button>
             </Form.Item>
-            <p>Agar accountingiz bo`lmasa ro`yxatdan o`ting. <span onClick={() => setComp(2)} style={{ cursor: 'pointer', textDecoration: "underline" }}>Ro`yxatdan o`tish</span></p>
+
+            <p>
+                Agar accountingiz bo`lmasa ro`yxatdan o`ting.{" "}
+                <span onClick={() => setComp(2)} style={{ cursor: 'pointer', textDecoration: "underline" }}>
+                    Ro`yxatdan o`tish
+                </span>
+            </p>
         </Form>
     );
 }
+
 export default SignIn;
