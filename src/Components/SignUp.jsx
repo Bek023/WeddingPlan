@@ -49,10 +49,12 @@ const SignUp = () => {
     const [feadback, setFeadback] = useState(false);
     const [userData, setUserData] = useState(true);
     const [user, setUser] = useState(false);
+    const { loadStatus, SetLoading, RemoveLoading } = load();
 
     const [form] = Form.useForm();
 
     const onFinish = async (values) => {
+        SetLoading();
         const payload = {
             username: values.username,
             fullname: values.fullname,
@@ -65,7 +67,9 @@ const SignUp = () => {
             const response = await axios.post('/register', payload);
             console.log('Foydalanuvchi ro‘yxatdan o‘tdi:', response.data);
             setComp(1);
+            RemoveLoading();
         } catch (error) {
+            RemoveLoading();
             const msg = error.response?.data?.message || "Ro`yxatdan o`tish xatoligi!";
             message.error(msg);
             console.error('Ro‘yxatdan o‘tishda xatolik:', error.response?.data || error.message);

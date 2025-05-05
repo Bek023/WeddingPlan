@@ -1,40 +1,40 @@
 import { create } from 'zustand';
 import axios from './Axios';
 
-// COMPONENT LIST (kerak bo‘lsa ko‘paytirish mumkin)
-// import { Profile } from '../Components/Profile';
-// import { Main } from '../Components/Main';
-// import { A_B_a_G } from '../Components/A_B_a_G';
-// import { Meals } from '../Components/Meals';
-// import { Company } from '../Components/Company';
-// import { Love_story } from '../Components/Love_Story';
-// import { Gallery } from '../Components/Gallery';
+// COMPONENT LIST 
+import { UserProfile } from '../Components/UserProfile';
+import { Main } from '../Components/Main';
+import { A_B_a_G } from '../Components/A_B_a_G';
+import { Meals } from '../Components/Meals';
+import { Company } from '../Components/Company';
+import { Love_story } from '../Components/Love_story';
+import { Gallery } from '../Components/Gallery';
 
 
 
 
-// // Component Store
-// const componentList = [
-//     { id: 1, title: 'Profile', component: () => <Profile /> },
-//     { id: 2, title: 'Main', component: () => <Main /> },
-//     { id: 3, title: 'A_B_a_G', component: () => <A_B_a_G /> },
-//     { id: 4, title: 'Love_story', component: () => <Love_story /> },
-//     { id: 5, title: 'Gallery', component: () => <Gallery /> },
-//     { id: 6, title: 'Meals', component: () => <Meals /> },
-//     { id: 7, title: 'Company', component: () => <Company /> },
+// Component Store
+const componentList = [
+    { id: 1, title: 'Profile', component: () => <UserProfile /> },
+    { id: 2, title: 'Main', component: () => <Main /> },
+    { id: 3, title: 'A_B_a_G', component: () => <A_B_a_G /> },
+    { id: 4, title: 'Love_story', component: () => <Love_story /> },
+    { id: 5, title: 'Gallery', component: () => <Gallery /> },
+    { id: 6, title: 'Meals', component: () => <Meals /> },
+    { id: 7, title: 'Company', component: () => <Company /> },
 
-// ];
+];
 
 
-// const useComponents = create((set) => ({
-//     comp: componentList[0],
-//     setComp: (index) => {
-//         if (componentList[index]) {
-//             set({ comp: componentList[index] });
-//         }
-//     },
-//     getAllComponents: () => componentList,
-// }));
+const useComponents = create((set) => ({
+    comp: componentList[0],
+    setComp: (index) => {
+        if (componentList[index]) {
+            set({ comp: componentList[index] });
+        }
+    },
+    getAllComponents: () => componentList,
+}));
 
 // components for auth
 import SignAbout from '../Components/SignAbout';
@@ -59,17 +59,13 @@ const useAuthComponents = create((set) => ({
 
 
 // User Token
-const id = localStorage.getItem("userId");
+const user = JSON.parse(localStorage.getItem("user"));
+// user data 
 
-
-
-
-
-
-// User data store
 const useData = create((set, get) => ({
+
     data: null,
-    getData: () => axios.get('/users').then((response) => {
+    getData: () => axios.get(`/user/${user}`).then((response) => {
         set({ data: response.data })
     }).catch((error) => {
         console.log(error);
@@ -82,9 +78,18 @@ const useData = create((set, get) => ({
             console.error(error);
         }
     },
-    load: true,
-    SetLoading: () => set({ load: true }),
-    RemoveLoading: () => set({ load: false }),
+
+}));
+
+
+
+
+// Loading
+const load = create((set, get) => ({
+
+    loadStatus: true,
+    SetLoading: () => set({ loadStatus: true }),
+    RemoveLoading: () => set({ loadStatus: false }),
 
 }));
 
@@ -105,10 +110,11 @@ const useModal = create((set, get) => ({
 
 
 export {
-    useData,
-    //  useComponents, 
+    load,
+    useComponents,
     useAuthComponents,
-    useModal
+    useModal,
+    useData
 };
 
 

@@ -1,49 +1,45 @@
 import React, { useRef } from 'react';
 import { Button, Form, Input, message } from 'antd';
-import { useAuthComponents } from '../Utils/zustand';
+import { useAuthComponents, load, useData } from '../Utils/zustand';
 import style from "./Style/SignIn.module.css";
 import axios from "../Utils/Axios";
+import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
     const { setComp } = useAuthComponents();
+    const { loadStatus, SetLoading, RemoveLoading } = load();
+    const { data, getData } = useData();
     const formRef = useRef(null);
+    const navigate = useNavigate()
 
     const onFinish = async () => {
+        SetLoading();
         const { username, password } = formRef.current.getFieldsValue();
         try {
             const response = await axios.post("/login", {
                 username,
                 password,
             });
-
-            const { remember_token, user } = response.data;
+            console.log(response.data);
+            const { remember_token } = response.data;
 
             if (remember_token) {
                 localStorage.setItem("remember_token", remember_token);
-                localStorage.setItem("user", JSON.stringify(user));
+                localStorage.setItem("user", JSON.stringify(username));
             }
-
+            getData();
+            RemoveLoading();
+            navigate("/");
             message.success("Muvaffaqiyatli tizimga kirdingiz!");
             console.log("Login success:", response.data);
-            
-            setComp(0);
         } catch (error) {
+            RemoveLoading();
             const msg = error.response?.data?.message || "Login xatoligi!";
             message.error(msg);
             console.error("Login error:", error.response?.data || error.message);
         }
     };
 
-    // const onFinish = async ()=>{
-    //     try{
-    //         const res = await axios.get('/users');
-    //         console.log(res);
-    //     }catch{
-    //         const msg = error.response?.data?.message || "Login xatoligi!";
-    //                 message.error(msg);
-    //                 console.error("Login error:", error.response?.data || error.message);
-    //     }
-    // };
 
     const onFinishFailed = () => {
         message.error("Iltimos barcha maydonlarni to'ldiring!");
