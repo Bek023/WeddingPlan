@@ -1,11 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
+
 * {
     margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
 }
-body{
-    background-color: pink;
+
+body {
+    background-color: rgb(217, 181, 214);
 }
+
 /* input:focus {
     outline: none !important;
 }
@@ -35,10 +43,11 @@ input:hover {
 .inp:hover {
     border: 3px solid pink;
 }
-.ant-input-password:hover{
+
+.ant-input-password:hover {
     border: 3px solid pink !important;
 }
 
-.ant-input-outlined:focus-within{
+.ant-input-outlined:focus-within {
     border: 3px solid pink !important;
 }

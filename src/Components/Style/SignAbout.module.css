@@ -1,5 +1,5 @@
 .formBlock {
-    font-size: 25px;
+    font-size: 20px;
     padding: 20px;
 }
 
@@ -10,6 +10,12 @@
     animation: fadeInUp 1.2s ease-out;
 }
 
+.formBlock h1 {
+    font-family: "Dancing Script", cursive;
+    font-optical-sizing: auto;
+    font-size: 40px;
+}
+
 .formBlock ul {
     margin-left: 40px;
 }
@@ -17,15 +23,16 @@
 .btns {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap; 
-    justify-content: center; 
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .btns button {
-    width: 150px;
+    width: 210px;
     height: 40px;
     border: none;
     border-radius: 20px;
+    padding: 5px;
     background: #d7bde2;
     color: aliceblue;
     font-size: large;
@@ -35,6 +42,7 @@
 
 .btns button:hover {
     transform: scale(1.1);
+    cursor: pointer;
 }
 
 /* ----------- Responsive styles ----------- */
@@ -68,5 +76,18 @@
     .btns button {
         width: 100%;
         max-width: 250px;
+    }
+}
+
+/* Animatsiya */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
