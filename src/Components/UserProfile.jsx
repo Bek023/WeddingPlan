@@ -35,16 +35,16 @@ export const UserProfile = () => {
                         <img src={profilePhoto} alt="profile photo" />
                         <div className={style.info}>
                             <h2> {data[0].fullname}</h2>
-                            <p>E-mail: {data[0].email}</p>
-                            <p>Username: {data[0].username}</p>
+                            <p><span>E-mail:</span> {data[0].email}</p>
+                            <p><span>Username:</span> {data[0].username}</p>
                         </div>
                     </div>
                 </div>
             ) : (
-                <p>Ma'lumotlar yuklanmoqda...</p>
+                <p className={style.loading}>Ma'lumotlar yuklanmoqda...</p>
             )}
 
-            <div style={{ width: "100%", height: "2px", backgroundColor: "#ccc", marginTop: "20px" }}></div>
+            <div style={{ width: "100%", height: "2px", backgroundColor: "#FB62F6", marginTop: "20px" }}></div>
         </>
     );
 };

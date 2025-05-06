@@ -27,13 +27,13 @@ const Sidebar = () => {
     ];
 
     return (
-        <div style={{ width: "15%", height: "100vh" }}>
+        <div style={{  height: "100vh" , borderRight: "2px solid #FB62F6"}}>
             <Menu
                 defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
                 mode="inline"
                 theme="light"
                 items={items}
+                inlineCollapsed={true}
                 style={{ height: '100%', borderRight: 0 }}
             />
         </div>

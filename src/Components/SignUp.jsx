@@ -10,7 +10,7 @@ import {
 import { useState } from 'react';
 import style from './Style/SignUp.module.css';
 import img1 from '../assets/images/register-first-img.jpg';
-import { useAuthComponents } from '../Utils/zustand';
+import { useAuthComponents , load} from '../Utils/zustand';
 
 
 const formItemLayout = {
@@ -89,7 +89,6 @@ const SignUp = () => {
             setFeadback(false);
         }
     }
-    const usernames = users.map(user => user.name);
     const onChangeUser = (e) => {
         const { value } = e.target;
         const hasUpperCase = /[A-Z]/.test(value);

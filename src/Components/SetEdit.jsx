@@ -20,7 +20,7 @@ const SetEdit = () => {
             uid: '-1',
             name: 'profile.png',
             status: 'done',
-        
+
 
         },
     ]);

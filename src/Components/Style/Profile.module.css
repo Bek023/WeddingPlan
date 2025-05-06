@@ -1,14 +1,17 @@
-.container  *{
+.container * {
     margin: 0 0;
+    font-family: "Playfair Display", serif;
 }
-.container{
+
+.container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 20px;
     padding: 20px;
 }
-.header{
+
+.header {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -16,41 +19,60 @@
 }
 
 
-.profile{
+.profile {
     margin: 0 0;
     display: flex;
     justify-content: start;
     gap: 20px;
 }
-.profile img{
+
+.profile img {
     width: 150px;
-    height:150px;
+    height: 150px;
     border-radius: 50%;
+    border: 2px solid #FB62F6;
 }
-.info{
+
+.info {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
-    align-items:flex-start;
+    align-items: flex-start;
 }
-.info h2{
+
+.info h2 {
     font-size: 30px;
     font-weight: 600;
     margin-bottom: 10px;
-}
-.info span{
-    font-size: 16px;
+
 }
 
+.info p {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.info span {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.loading {
+    margin-top: 20px;
+    margin-left: 35%;
+    font-size: 36px;
+    font-weight: 700;
+}
 
 
 /* set edit */
 
-.block{
+.block {
     width: 100%;
 }
-.btnBlock{
+
+.btnBlock {
     width: 100%;
     display: flex;
     justify-content: space-between;
