@@ -65,19 +65,43 @@ const user = JSON.parse(localStorage.getItem("user"));
 const useData = create((set, get) => ({
 
     data: null,
-    getData: () => axios.get(`/user/${user}`).then((response) => {
-        set({ data: response.data })
-    }).catch((error) => {
-        console.log(error);
-    }),
-    updateUser: async (newData) => {
+    getData: () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+            console.warn("User topilmadi!");
+            return;
+        }
+
+        axios.get(`/user/${user.username}`)
+            .then((response) => {
+                set({ data: response.data });
+            })
+            .catch((error) => {
+                console.log("getData error:", error);
+            });
+    },
+    updateUser: async (newData, imageFile) => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const formData = new FormData();
+        formData.append("fullname", newData.fullname);
+        formData.append("email", newData.email);
+        formData.append("password", newData.password);
+        if (imageFile) {
+            formData.append("image", imageFile);
+        }
+
         try {
-            const response = await axios.patch(`/users/${id}`, newData);
+            const response = await axios.post(`/updateuser/${user.id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             set({ data: response.data });
         } catch (error) {
             console.error(error);
         }
     },
+
 
 }));
 

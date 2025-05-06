@@ -20,18 +20,17 @@ function SignIn() {
                 username,
                 password,
             });
-            console.log(response.data);
-            const { remember_token } = response.data;
 
+            const { remember_token } = response.data;
             if (remember_token) {
                 localStorage.setItem("remember_token", remember_token);
-                localStorage.setItem("user", JSON.stringify(username));
+                localStorage.setItem("user", JSON.stringify(response.data));
             }
-            getData();
+
+            await getData(); 
             RemoveLoading();
             navigate("/");
             message.success("Muvaffaqiyatli tizimga kirdingiz!");
-            console.log("Login success:", response.data);
         } catch (error) {
             RemoveLoading();
             const msg = error.response?.data?.message || "Login xatoligi!";
@@ -39,6 +38,7 @@ function SignIn() {
             console.error("Login error:", error.response?.data || error.message);
         }
     };
+
 
 
     const onFinishFailed = () => {

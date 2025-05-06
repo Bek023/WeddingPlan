@@ -16,9 +16,9 @@ const Sidebar = () => {
             icon: <MailOutlined />,
             children: [
                 { key: '2', label: 'Main', onClick: () => setComp(1) },
-                { key: '3', label: 'About the bride and groom', onClick: () => setComp(2) },
+                { key: '3', label: 'Couple About', onClick: () => setComp(2) },
                 { key: '4', label: 'Love story', onClick: () => setComp(3) },
-                { key: '5', label: 'gallery', onClick: () => setComp(4) },
+                { key: '5', label: 'Gallery', onClick: () => setComp(4) },
                 { key: '6', label: 'Meals', onClick: () => setComp(5) },
                 { key: '7', label: 'Company', onClick: () => setComp(6) }
             ],

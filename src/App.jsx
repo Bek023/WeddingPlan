@@ -4,23 +4,18 @@ import { useEffect } from 'react';
 import SignPage from './Pages/SignPage';
 import { ConfigProvider } from 'antd';
 import { Routes, Route } from "react-router-dom";
-import { load , useData} from "./Utils/zustand"
+import { load, useData } from "./Utils/zustand"
 import Loading from './Components/Loading';
 import Profile from "./Pages/Profile"
 import Private_routes from './Routes/PrivateRoutes';
 
 function App() {
   const { loadStatus, SetLoading, RemoveLoading } = load();
-  const {data , getData} = useData();
+  const { data, getData } = useData();
 
   useEffect(() => {
     RemoveLoading();
-    getData();
   }, []);
-  useEffect(() => {
-    RemoveLoading();
-  }, [data]);
-
   return (
     <>
       <ConfigProvider
