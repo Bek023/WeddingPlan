@@ -9,7 +9,6 @@ import {
 } from 'antd';
 import { useState } from 'react';
 import style from './Style/SignUp.module.css';
-import users from '../Utils/data';
 import img1 from '../assets/images/register-first-img.jpg';
 import { useAuthComponents } from '../Utils/zustand';
 

@@ -1,7 +1,16 @@
+import { CoupleAbout } from "../Utils/data";
+
+
 export const A_B_a_G = () => {
     return (
         <div>
-            <h1>A_B_a_G</h1>
+            <form action="#"
+                defaultValue={
+                    users
+                }
+            ></form>
+            <h1>Couple about</h1>
+
         </div>
     )
 }
