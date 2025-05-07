@@ -8,11 +8,11 @@ import { load, useData } from "./Utils/zustand"
 import Loading from './Components/Loading';
 import Profile from "./Pages/Profile"
 import Private_routes from './Routes/PrivateRoutes';
+import '@ant-design/v5-patch-for-react-19';
+import NotFound from './Pages/404';
 
 function App() {
   const { loadStatus, SetLoading, RemoveLoading } = load();
-  const { data, getData } = useData();
-
   useEffect(() => {
     RemoveLoading();
   }, []);
@@ -32,6 +32,7 @@ function App() {
               <Private_routes>
                 <Profile />
               </Private_routes>} />
+            <Route path='*' element={<NotFound/>}/>
           </Routes>
         }
 

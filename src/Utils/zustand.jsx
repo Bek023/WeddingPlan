@@ -40,6 +40,7 @@ const useComponents = create((set) => ({
 import SignAbout from '../Components/SignAbout';
 import SignIn from '../Components/SignIn';
 import SignUp from '../Components/SignUp';
+import { message } from 'antd';
 
 const authComponents = [
     { id: 1, title: 'About', component: () => <SignAbout /> },
@@ -83,24 +84,32 @@ const useData = create((set, get) => ({
     updateUser: async (newData, imageFile) => {
         const user = JSON.parse(localStorage.getItem("user"));
         const formData = new FormData();
+    
         formData.append("fullname", newData.fullname);
         formData.append("email", newData.email);
         formData.append("password", newData.password);
+    
         if (imageFile) {
             formData.append("image", imageFile);
         }
-
+    
         try {
-            const response = await axios.post(`/updateuser/${user.id}`, formData, {
+            const response = await axios.put(`/updateuser/${user.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+    
             set({ data: response.data });
+            message.success("Ma'lumotlar muvaffaqiyatli yangilandi!");
+            return true;
         } catch (error) {
-            console.error(error);
+            console.error("updateUser xatolik:", error);
+            message.error("Ma'lumotlarni yangilashda xatolik yuz berdi");
+            return false;
         }
-    },
+    }
+
 
 
 }));

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useComponents } from '../Utils/zustand';
 import {
     MailOutlined,
@@ -7,6 +8,7 @@ import {
 import { Menu } from 'antd';
 const Sidebar = () => {
     const { comp, setComp } = useComponents();
+    const navigate = useNavigate();
     const items = [
         { key: '1', icon: <PieChartOutlined />, label: 'Profile', onClick: () => setComp(0) },
 
@@ -25,17 +27,23 @@ const Sidebar = () => {
         },
 
     ];
-
+    function chiqish() {
+        localStorage.removeItem("user");
+        navigate('/sign');
+    }
     return (
-        <div style={{  height: "100vh" , borderRight: "2px solid #FB62F6"}}>
+        <div style={{ height: "100vh", borderRight: "2px solid #FB62F6", background: "#fff", display: "flex", flexDirection: 'column', justifyContent: 'space-between' }}>
             <Menu
                 defaultSelectedKeys={['1']}
                 mode="inline"
                 theme="light"
                 items={items}
                 inlineCollapsed={true}
-                style={{ height: '100%', borderRight: 0 }}
-            />
+            // style={{ height: '100%', borderRight: 0 }}
+            >
+
+            </Menu>
+            <button onClick={chiqish} >Chiqish</button>
         </div>
     );
 };
