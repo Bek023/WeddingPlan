@@ -4,7 +4,7 @@ import style from './style/404.module.css'
 export default function NotFound() {
     const navigate = useNavigate();
     function nav(){
-        navigate('/sign');
+        navigate('/');
     }
     return (
         <>
