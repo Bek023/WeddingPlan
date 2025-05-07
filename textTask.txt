@@ -1,52 +1,121 @@
-To make yourweddinginvitationwebsitemoreengagingandattractcustomerattention,youcanusesubtleandelegantanimationsthatfittheromanticandclassytheme.Here'sabreakdownofwhereandwhatanimationsyoucanapply:
+Frontend Developer API Documentation
+Base API URL: https://100m.uz
+1. Registration
+Endpoint: POST /register
+Expected Payload:
+•	- username
+•	- fullname
+•	- email
+•	- password
+•	- template_name
+2. Login
+Endpoint: POST /login
+Expected Payload:
+•	- username
+•	- password
+•	- remember_token
+3. Couple About
+Table: couple_about
+Fields:
+•	- id
+•	- user_id
+•	- couple_img
+•	- husband_name
+•	- wife_name
+•	- wed_day
+•	- wed_month
+•	- wed_year
+•	- husband_about
+•	- wife_about
+•	- husband_img
+•	- wife_img
+4. Couple Story
+Table: couple_story
+•	- id
+•	- user_id
+•	- img
+•	- title
+•	- description
+•	- day
+•	- month
+•	- year
+5. Couple Gallary
+Table: couple_gallary
+•	- id
+•	- user_id
+•	- couple_gallary
+6. Company
+Table: company
+•	- id
+•	- user_id
+•	- comp_name
+•	- comp_img
+•	- comp_desc
+•	- comp_worked_date
+7. Meal
+Table: meal
+•	- id
+•	- user_id
+•	- meal_name
+8. Wedding Day Plan
+Table: wedding_day_plan
+•	- id
+•	- user_id
+•	- wedding_location
+•	- day_plans_time
+•	- coup_st_id
+•	- coup_ab_id
+•	- meal_id
+•	- coup_gal_id
+•	- comp_id
+•	- created_at
+•	- updated_at
+•	- deleted_at
+9. API Routes
+•	GET /users
+•	GET /user/{username}
+•	POST /register
+•	POST /login
+•	POST /users
+•	PUT /updateuser/{id}
+•	DELETE /deluser/{id}
+•	DELETE /deleteuser/{id}
 
----
+COUPLE-ABOUT
+•	GET /couple-about
+•	GET /couple-about-just
+•	POST /couple-about
+•	PUT /couple-about/{id}
+•	DELETE /couple-about/{id}
 
-### 🎯 Main Animation Targets & Suggestions:
+COUPLE-STORY
+•	GET /couple-story
+•	POST /couple-story
+•	PUT /couple-story/{id}
+•	DELETE /couple-story/{id}
 
-#### 1. Text Headline:
+WEDDING_PLAN_DAY (MAIN DB TABLE)
+•	GET /weddingplans
+•	POST /weddingplans
+•	PUT /weddingplans/{id}
+•	DELETE /weddingplans/{id}
 
-- Animation: Fade-inwithslightupwardmotion(fadeInUp)
--Why: Makes the heading feel elegant and draws initial attention.
--Trigger: On page load.
+MEAL
+•	GET /meals
+•	POST /createmeal
+•	PUT /updatemeal/{id}
+•	DELETE /delmeal/{id}
 
-#### 2. Buttons (Register & Sign In):
+GALLARIES
+•	GET /gallaries
+•	POST /creategall
+•	DELETE /delgall/{id}
 
-- Animation: Pulseorscale-upslightlyonhover.
--Why: Encourages interaction and improves click-through rate.
--Trigger: On hover.
+COMPANY
+•	GET /companies
+•	POST /createcomp
+•	PUT /updatecomp/{id}
+•	DELETE /delcomp/{id}
 
-#### 3. Social Media Icons:
-
-- Animation: Bounceorsubtlerotateonhover.
--Why: Adds charm without overwhelming the page.
--Trigger: On hover.
-
-#### 4. Decorative Corners (Flowers):
-
-- Animation: Veryslowfloatingeffectorsoftblinkingglow.
--Why: Adds a dreamy, romantic touch.
--Trigger: Continuous loop (very slow, 10–15s cycle).
-
-#### 5. Bride & Groom Image (Left side):
-
-- Animation: Parallaxscrollorslowzoom-in.
--Why: Gives depth and movement to the hero section.
--Trigger: On scroll or on load.
-
-#### 6. Bottom Decoration (Curvy Lines):
-
-- Animation: Draw-oneffect(likeit'sbeingsketchedlive).
--Why: Adds a classy transition.
--Trigger: On page load.
-
----
-
-### 🛠 Tools You Can Use
-
-- CSS animations:@keyframes,transition,andanimation
--JavaScriptlibraries: [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/), [GSAP](https://greensock.com/gsap/), [Lottie](https://lottiefiles.com/) for vector-based animated elements
-
----
-
-Would you like me to generate example CSS or code snippets for these animations?
+TEMPLATE
+•	GET /template/{username} (web.php)

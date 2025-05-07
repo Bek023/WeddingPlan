@@ -2,25 +2,16 @@ import { useData } from "../Utils/zustand";
 import style from "./Style/Profile.module.css";
 import avatar from "../assets/images/Login_bg.jpg";
 import SetEdit from "./SetEdit";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 
 export const UserProfile = () => {
     const { data, getData } = useData();
-    const [profilePhoto, setProfilePhoto] = useState(avatar);
 
     useLayoutEffect(() => {
         getData();
     }, []);
 
-    useEffect(() => {
-        if (data && data.length > 0) {
-            if (data[0].img) {
-                setProfilePhoto(data[0].img);
-            } else {
-                setProfilePhoto(avatar);
-            }
-        }
-    }, [data]);
+
 
     return (
         <>
@@ -32,7 +23,7 @@ export const UserProfile = () => {
                     </div>
                     <div className={style.profile}>
 
-                        <img src={profilePhoto} alt="profile photo" />
+
                         <div className={style.info}>
                             <h2> {data[0].fullname}</h2>
                             <p><span>E-mail:</span> {data[0].email}</p>

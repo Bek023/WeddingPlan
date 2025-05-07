@@ -41,6 +41,7 @@ import SignAbout from '../Components/SignAbout';
 import SignIn from '../Components/SignIn';
 import SignUp from '../Components/SignUp';
 import { message } from 'antd';
+import { data } from 'react-router-dom';
 
 const authComponents = [
     { id: 1, title: 'About', component: () => <SignAbout /> },
@@ -59,8 +60,7 @@ const useAuthComponents = create((set) => ({
 
 
 
-// User Token
-const user = JSON.parse(localStorage.getItem("user"));
+
 // user data 
 
 const useData = create((set, get) => ({
@@ -81,25 +81,19 @@ const useData = create((set, get) => ({
                 console.log("getData error:", error);
             });
     },
-    updateUser: async (newData, imageFile) => {
+    updateUser: async (newData) => {
         const user = JSON.parse(localStorage.getItem("user"));
         const formData = new FormData();
-    
         formData.append("fullname", newData.fullname);
         formData.append("email", newData.email);
         formData.append("password", newData.password);
-    
-        if (imageFile) {
-            formData.append("image", imageFile);
-        }
-    
+        formData.append("username", newData.username);
+        for (const [key, value] of formData) {
+            console.log(`${key}: ${value}\n`);
+        };
         try {
-            const response = await axios.put(`/updateuser/${user.id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-    
+            const response = await axios.put(`/updateuser/${user.id}`, formData);
+
             set({ data: response.data });
             message.success("Ma'lumotlar muvaffaqiyatli yangilandi!");
             return true;

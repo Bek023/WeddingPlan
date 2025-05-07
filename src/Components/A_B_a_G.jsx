@@ -5,9 +5,11 @@ import {
     DatePicker,
     Form,
     Input,
-    Upload
+    Upload,
+    Select,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import FormItem from 'antd/es/form/FormItem';
 const formItemLayout = {
     labelCol: {
         xs: { span: 30 },
@@ -24,6 +26,10 @@ const normFile = e => {
     }
     return e === null || e === void 0 ? void 0 : e.fileList;
 };
+const days = Array.from({ length: 31 }, (_, i) => ({
+    label: `${i + 1}`.padStart(2, '0'),
+    value: i + 1,
+}));
 const A_B_a_G = () => {
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
@@ -46,7 +52,7 @@ const A_B_a_G = () => {
                 variant={'filled'}
                 style={{ maxWidth: 700, height: 100 }}
                 className={style.from}
-                
+
             >
 
 
@@ -71,13 +77,32 @@ const A_B_a_G = () => {
                 >
                     <Input.TextArea />
                 </Form.Item>
+                <FormItem
+                    label="To`y sanasining kuni"
+                    name='wed_day'
+                    rules={[{ required: true }]}
+                >
+                    <Select
+                        options={days}
+                        placeholder="Kunni tanlang"
+                        style={{ width: 120 }}
+                        onChange={(value) => console.log('Tanlangan kun:', value)}
+                    />
 
+                </FormItem>
                 <Form.Item
-                    label="DatePicker"
+                    label="To`y sanasining oyi"
                     name="DatePicker"
                     rules={[{ required: true, message: 'Please input!' }]}
                 >
-                    <DatePicker />
+                    <DatePicker picker="month"/>
+                </Form.Item>
+                <Form.Item
+                    label="To`y sanasining yili"
+                    name="DatePicker"
+                    rules={[{ required: true, message: 'Please input!' }]}
+                >
+                    <DatePicker picker="year"/>
                 </Form.Item>
 
                 <Form.Item label="Groom's photo" valuePropName="fileList" getValueFromEvent={normFile} rules={[{ required: true }]}>

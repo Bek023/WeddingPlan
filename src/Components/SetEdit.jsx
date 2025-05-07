@@ -6,7 +6,7 @@ import style from './style/Profile.module.css';
 import { useData, useModal, load } from '../Utils/zustand';
 import avatar from "../assets/images/Login_bg.jpg"
 
-const normFile = e => (Array.isArray(e) ? e : e?.fileList || []);
+
 
 const SetEdit = () => {
     const formProfile = useRef(null);
@@ -14,28 +14,14 @@ const SetEdit = () => {
     const { open, setOpen, closeOpen } = useModal();
     const { SetLoading, RemoveLoading } = load();
 
-    const [fileList, setFileList] = useState([
-        {
-            uid: '-1',
-            name: 'default.png',
-            status: 'done',
-            url: data[0]?.image ||avatar,
-        },
-    ]);
 
-    const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
+
 
     const checkPassword = async (values) => {
         SetLoading();
 
-        // const oldPassword = values.OldPassword;
         const newPassword = values.user.password;
-
-        // if (oldPassword !== data[0]?.password) {
-        //     message.error("Eski parol noto'g'ri");
-        //     RemoveLoading();
-        //     return;
-        // }
 
         if (newPassword.length < 8) {
             message.error("Yangi parol kamida 8 ta belgidan iborat bo'lishi kerak");
@@ -47,11 +33,9 @@ const SetEdit = () => {
             fullname: values.user.name,
             email: values.user.email,
             password: newPassword,
+            username: values.user.username,
         };
-
-        const imageFile = fileList[0]?.originFileObj || null;
-
-        const success = await updateUser(updatedData, imageFile);
+        const success = await updateUser(updatedData);
         if (success) closeOpen();
 
         RemoveLoading();
@@ -76,30 +60,19 @@ const SetEdit = () => {
                         user: {
                             name: data[0]?.fullname,
                             email: data[0]?.email,
+                            username: data[0].username,
                         }
                     }}
                     onFinish={checkPassword}
                 >
                     <div className={style.form}>
-                        <Form.Item label="" valuePropName="fileList" getValueFromEvent={normFile}>
-                            <Upload
-                                listType="picture-circle"
-                                fileList={fileList}
-                                beforeUpload={() => false}
-                                onChange={handleChange}
-                                name="image"
-                            >
-                                {fileList.length >= 1 ? null : (
-                                    <button style={{ border: 0, background: 'none' }} type="button">
-                                        <PlusOutlined />
-                                        <div style={{ marginTop: 8 }}>Upload</div>
-                                    </button>
-                                )}
-                            </Upload>
-                        </Form.Item>
 
                         <p>Full name</p>
                         <Form.Item name={['user', 'name']} rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <p>Username</p>
+                        <Form.Item name={['user', 'username']} rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
 
@@ -108,13 +81,8 @@ const SetEdit = () => {
                             <Input />
                         </Form.Item>
 
-                        {/* <p>Old password</p>
-                        <Form.Item name="OldPassword" rules={[{ required: true }]}>
-                            <Input.Password />
-                        </Form.Item> */}
-
                         <p>New password</p>
-                        <Form.Item name={['user', 'password']} rules={[{ required: true }]}>
+                        <Form.Item name={['user', 'password']} rules={[{ required: true }]} >
                             <Input.Password />
                         </Form.Item>
 
