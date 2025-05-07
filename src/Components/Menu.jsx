@@ -39,11 +39,11 @@ const Sidebar = () => {
                 theme="light"
                 items={items}
                 inlineCollapsed={true}
-            // style={{ height: '100%', borderRight: 0 }}
+             style={{  borderRight: 0 }}
             >
 
             </Menu>
-            <button onClick={chiqish} >Chiqish</button>
+            <button onClick={chiqish} style={{marginBottom: 30, border:"none", padding:5, background:"red",color:"white", fontSize:20, borderRadius:15}} >Chiqish</button>
         </div>
     );
 };
