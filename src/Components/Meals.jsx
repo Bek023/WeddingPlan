@@ -5,39 +5,40 @@ import { useRef, useState } from 'react';
 
 export const Meals = () => {
     const { open, setOpen, closeOpen } = useModal();
-    const newMeal = useRef();
 
-    // 👉 Meals data state (shunday qilish kerak!)
     const [meals, setMeals] = useState([
         { key: 1, name: 'John Brown' },
         { key: 2, name: 'Jane Doe' },
     ]);
 
-    // 🔑 Dynamic unique ID generator
+    const [mealName, setMealName] = useState('');
     const nextKey = useRef(meals.length + 1);
 
-    // ➕ Yangi meal qo‘shish
     const onFinish = () => {
-        const value = newMeal.current.input.value.trim();
+        const value = mealName.trim();
         if (value.length === 0) {
             message.warning('Input is empty');
             return;
         }
-    
+
         setMeals(prev => [
             ...prev,
             { key: nextKey.current++, name: value }
         ]);
-    
-        handleClose(); // modal yopiladi va input tozalanadi
+
+        setMealName('');
+        handleClose();
     };
 
-    // ❌ Qatorni o‘chirish
+    const handleClose = () => {
+        setMealName('');
+        closeOpen();
+    };
+
     const handleDelete = (key) => {
         setMeals(prev => prev.filter(item => item.key !== key));
     };
 
-    // 📊 Columnlar
     const columns = [
         {
             title: 'Name',
@@ -58,36 +59,39 @@ export const Meals = () => {
             ),
         },
     ];
-    const handleClose = () => {
-        closeOpen();
-        if (newMeal.current) {
-            newMeal.current.input.value = '';
-        }
-        return (
-            <>
-                <div>
-                    <h1>Meals</h1>
-                    <Button type="primary" onClick={setOpen}><PlusCircleOutlined /></Button>
 
-                    <Modal
-                        title="Add a meal"
-                        open={open}
-                        onOk={onFinish}
-                        onCancel={handleClose}
-                        okText="Add"
-                    >
-                        <Input placeholder="Add a meal" maxLength={25} ref={newMeal} />
-                    </Modal>
-                </div>
+    return (
+        <>
+            <div style={{display:"flex", width:"100%", justifyContent:"space-between", padding:20}}>
+                <h1 style={{margin:"0 0"}}>Meals</h1>
+                <Button type="primary" onClick={setOpen} style={{margin:"0 20px 0 0"}}>
+                    <PlusCircleOutlined />
+                </Button>
 
-                <div>
-                    <Table
-                        columns={columns}
-                        dataSource={meals}
-                        style={{ maxWidth: 600 }}
-                        pagination={false}
+                <Modal
+                    title="Add a meal"
+                    open={open}
+                    onOk={onFinish}
+                    onCancel={handleClose}
+                    okText="Add"
+                >
+                    <Input
+                        placeholder="Add a meal"
+                        maxLength={25}
+                        value={mealName}
+                        onChange={e => setMealName(e.target.value)}
                     />
-                </div>
-            </>
-        );
-    };
+                </Modal>
+            </div>
+
+            <div>
+                <Table
+                    columns={columns}
+                    dataSource={meals}
+                    style={{ maxWidth: 600 }}
+                    pagination={false}
+                />
+            </div>
+        </>
+    );
+};
