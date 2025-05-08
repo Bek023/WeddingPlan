@@ -5,27 +5,23 @@ Endpoint: POST /register
 Expected Payload:
 •	- username
 •	- fullname
-•	- email
+•	- email           --> done
 •	- password
 •	- template_name
 2. Login
 Endpoint: POST /login
 Expected Payload:
 •	- username
-•	- password
+•	- password          --> done
 •	- remember_token
 3. Couple About
 Table: couple_about
 Fields:
 •	- id
 •	- user_id
-•	- couple_img
 •	- husband_name
 •	- wife_name
-•	- wed_day
-•	- wed_month
-•	- wed_year
-•	- husband_about
+•	- husband_about     -->done
 •	- wife_about
 •	- husband_img
 •	- wife_img
@@ -35,7 +31,7 @@ Table: couple_story
 •	- user_id
 •	- img
 •	- title
-•	- description
+•	- description  
 •	- day
 •	- month
 •	- year
@@ -55,7 +51,7 @@ Table: company
 7. Meal
 Table: meal
 •	- id
-•	- user_id
+•	- user_id           
 •	- meal_name
 8. Wedding Day Plan
 Table: wedding_day_plan

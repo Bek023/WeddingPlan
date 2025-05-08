@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Button, Modal, Form, Input, message, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import style from './style/Profile.module.css';
 
 import { useData, useModal, load } from '../Utils/zustand';
-import avatar from "../assets/images/Login_bg.jpg"
+
 
 
 

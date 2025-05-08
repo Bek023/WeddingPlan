@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { useComponents } from '../Utils/zustand';
 import {
     MailOutlined,
     PieChartOutlined,
+    LogoutOutlined ,
 } from '@ant-design/icons';
-import { Menu } from 'antd';
+import { Button, Menu } from 'antd';
 const Sidebar = () => {
-    const { comp, setComp } = useComponents();
+    const {  setComp } = useComponents();
     const navigate = useNavigate();
     const items = [
         { key: '1', icon: <PieChartOutlined />, label: 'Profile', onClick: () => setComp(0) },
@@ -43,7 +44,8 @@ const Sidebar = () => {
             >
 
             </Menu>
-            <button onClick={chiqish} style={{marginBottom: 30, border:"none", padding:5, background:"red",color:"white", fontSize:20, borderRadius:15}} >Chiqish</button>
+            <Button onClick={chiqish} type="primary" danger style={{marginBottom: 30, width:50, height:50 ,padding:5, borderRadius:'50%', fontSize:30}}><LogoutOutlined /></Button>
+            {/* <button onClick={chiqish} style={{marginBottom: 30, border:"none", padding:5, background:"red",color:"white", fontSize:20, borderRadius:15}} >Chiqish</button> */}
         </div>
     );
 };

@@ -41,7 +41,7 @@ import SignAbout from '../Components/SignAbout';
 import SignIn from '../Components/SignIn';
 import SignUp from '../Components/SignUp';
 import { message } from 'antd';
-import { data } from 'react-router-dom';
+
 
 const authComponents = [
     { id: 1, title: 'About', component: () => <SignAbout /> },
@@ -63,7 +63,7 @@ const useAuthComponents = create((set) => ({
 
 // user data 
 
-const useData = create((set, get) => ({
+const useData = create((set) => ({
 
     data: null,
     getData: () => {
@@ -88,9 +88,7 @@ const useData = create((set, get) => ({
         formData.append("email", newData.email);
         formData.append("password", newData.password);
         formData.append("username", newData.username);
-        for (const [key, value] of formData) {
-            console.log(`${key}: ${value}\n`);
-        };
+
         try {
             const response = await axios.put(`/updateuser/${user.id}`, formData);
 
@@ -109,10 +107,48 @@ const useData = create((set, get) => ({
 }));
 
 
+// Couple about
+
+const useCoupleStore = create((set) => ({
+    coupleData: null,
+    getCoupleData: async () => {
+
+        try {
+            const res = await axios.get(`/couple-about`);
+            set({ coupleData: res.data });
+        } catch (err) {
+            console.error('Error fetching couple data:', err);
+        } finally {
+            set({ loading: false });
+        }
+    },
+    updateCoupleData: async (data) => {
+        const formData = new FormData();
+        const user = JSON.parse(localStorage.getItem("user"));
+        formData.append("husband_name", data.husband_name);
+        formData.append("husband_about", data.husband_about);
+        formData.append("husband_img", data.husband_img[0]);
+        formData.append("wife_name", data.wife_name);
+        formData.append("wife_about", data.wife_about);
+        formData.append("wife_img", data.wife_img[0]);
+        formData.append("couple_img", data.couple_img[0]);
+        formData.append("user_id", user.id);
+
+
+        try {
+            await axios.post(`/couple-about`, formData);
+        } catch (err) {
+            console.error('Update failed:', err);
+        } finally {
+            set({ loading: false });
+        }
+    },
+}));
+
 
 
 // Loading
-const load = create((set, get) => ({
+const load = create((set) => ({
 
     loadStatus: true,
     SetLoading: () => set({ loadStatus: true }),
@@ -127,7 +163,7 @@ const load = create((set, get) => ({
 
 
 // Modal store
-const useModal = create((set, get) => ({
+const useModal = create((set) => ({
     open: false,
     setOpen: () => set({ open: true }),
     closeOpen: () => set({ open: false }),
@@ -141,7 +177,8 @@ export {
     useComponents,
     useAuthComponents,
     useModal,
-    useData
+    useData,
+    useCoupleStore
 };
 
 

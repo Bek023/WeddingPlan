@@ -1,6 +1,13 @@
 .block {
     padding: 20px;
+    width: 50%;
 }
-.block h1{
-    margin-bottom: 20px;
+.title{
+    margin: 20px;
+}
+.from{
+    display: flex;
+    gap: 30px;
+    font-size: 20px;
+ 
 }

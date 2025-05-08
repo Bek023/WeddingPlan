@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import SignPage from './Pages/SignPage';
 import { ConfigProvider } from 'antd';
 import { Routes, Route } from "react-router-dom";
-import { load, useData } from "./Utils/zustand"
+import { load} from "./Utils/zustand"
 import Loading from './Components/Loading';
 import Profile from "./Pages/Profile"
 import Private_routes from './Routes/PrivateRoutes';
@@ -23,6 +23,7 @@ function App() {
           token: {
             colorPrimary: "#FB62F6",
             colorInfo: "pink",
+            fontSize:18
           },
         }}>
         {loadStatus ? <Loading /> :

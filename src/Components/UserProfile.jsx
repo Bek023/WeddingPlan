@@ -1,6 +1,5 @@
 import { useData } from "../Utils/zustand";
 import style from "./Style/Profile.module.css";
-import avatar from "../assets/images/Login_bg.jpg";
 import SetEdit from "./SetEdit";
 import { useLayoutEffect } from "react";
 

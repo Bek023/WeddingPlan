@@ -9,7 +9,7 @@ import style from './style/Sign.module.css';
 import { useAuthComponents } from '../Utils/zustand';
 
 
-export default function SignPage({ }) {
+export default function SignPage() {
     const { comp} = useAuthComponents();
 
     
@@ -27,7 +27,7 @@ export default function SignPage({ }) {
                         </div>
                         <div className={style.SignBlock}>
                             <img src={h_shape} alt="" />
-                            {true && comp.component()}
+                            { comp.component()}
 
                             <img src={f_shape} alt="" />
                         </div>
