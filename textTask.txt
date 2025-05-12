@@ -51,7 +51,7 @@ Table: company
 7. Meal
 Table: meal
 •	- id
-•	- user_id           
+•	- user_id           --> done
 •	- meal_name
 8. Wedding Day Plan
 Table: wedding_day_plan
@@ -71,11 +71,11 @@ Table: wedding_day_plan
 •	GET /users
 •	GET /user/{username}
 •	POST /register
-•	POST /login
+•	POST /login                 --> done
 •	POST /users
 •	PUT /updateuser/{id}
-•	DELETE /deluser/{id}
-•	DELETE /deleteuser/{id}
+•	DELETE /deluser/{id}   --> admin
+•	DELETE /deleteuser/{id}   --> admin
 
 COUPLE-ABOUT
 •	GET /couple-about
@@ -99,7 +99,7 @@ WEDDING_PLAN_DAY (MAIN DB TABLE)
 MEAL
 •	GET /meals
 •	POST /createmeal
-•	PUT /updatemeal/{id}
+•	PUT /updatemeal/{id}        -->done
 •	DELETE /delmeal/{id}
 
 GALLARIES

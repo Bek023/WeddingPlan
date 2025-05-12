@@ -1,24 +1,19 @@
 
 import { Button, Input, Modal, Table, message } from 'antd';
 import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { useMealsStore, useModal } from '../Utils/zustand';
+import { useEffect, useState } from 'react';
+import { useMealsStore, useModal, load } from '../Utils/zustand';
 
 
 export const Meals = () => {
     const { open, setOpen, closeOpen } = useModal();
     const { meals, getMeals, addMeal, deleteMeal } = useMealsStore();
+    const { SetLoading, RemoveLoading } = load();
     const [mealName, setMealName] = useState('');
 
-    useLayoutEffect(() => {
-        getMeals();
-    }, []);
-
-
-
-
-
     const onFinish = async () => {
+
+        SetLoading();
         const value = mealName.trim();
         if (value.length === 0) {
             message.warning('Input is empty');
@@ -29,7 +24,7 @@ export const Meals = () => {
         setMealName('');
         getMeals();
         handleClose();
-
+        setTimeout(()=>{RemoveLoading()}, 700)
     };
 
     const handleClose = () => {
@@ -38,7 +33,10 @@ export const Meals = () => {
     };
 
     const handleDelete = async (id) => {
+        SetLoading();
         await deleteMeal(id);
+        getMeals();
+        setTimeout(()=>{RemoveLoading()}, 700)
     };
 
     const columns = [
@@ -91,6 +89,7 @@ export const Meals = () => {
                     dataSource={meals}
                     rowKey="id"
                     style={{ maxWidth: 600 }}
+                    size="middle"
                 />
             </div>
         </>

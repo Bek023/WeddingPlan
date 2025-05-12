@@ -1,13 +1,15 @@
-import { useData } from "../Utils/zustand";
+import { useData , useMealsStore} from "../Utils/zustand";
 import style from "./Style/Profile.module.css";
 import SetEdit from "./SetEdit";
 import { useLayoutEffect } from "react";
 
 export const UserProfile = () => {
     const { data, getData } = useData();
+    const {getMeals} = useMealsStore();
 
     useLayoutEffect(() => {
         getData();
+        getMeals();
     }, []);
 
 
