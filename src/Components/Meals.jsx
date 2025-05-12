@@ -1,33 +1,35 @@
+
 import { Button, Input, Modal, Table, message } from 'antd';
 import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { useModal } from '../Utils/zustand';
-import { useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { useMealsStore, useModal } from '../Utils/zustand';
+
 
 export const Meals = () => {
     const { open, setOpen, closeOpen } = useModal();
-
-    const [meals, setMeals] = useState([
-        { key: 1, name: 'John Brown' },
-        { key: 2, name: 'Jane Doe' },
-    ]);
-
+    const { meals, getMeals, addMeal, deleteMeal } = useMealsStore();
     const [mealName, setMealName] = useState('');
-    const nextKey = useRef(meals.length + 1);
 
-    const onFinish = () => {
+    useLayoutEffect(() => {
+        getMeals();
+    }, []);
+
+
+
+
+
+    const onFinish = async () => {
         const value = mealName.trim();
         if (value.length === 0) {
             message.warning('Input is empty');
             return;
         }
 
-        setMeals(prev => [
-            ...prev,
-            { key: nextKey.current++, name: value }
-        ]);
-
+        await addMeal({ meal_name: value });
         setMealName('');
+        getMeals();
         handleClose();
+
     };
 
     const handleClose = () => {
@@ -35,23 +37,22 @@ export const Meals = () => {
         closeOpen();
     };
 
-    const handleDelete = (key) => {
-        setMeals(prev => prev.filter(item => item.key !== key));
+    const handleDelete = async (id) => {
+        await deleteMeal(id);
     };
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: text => <a>{text}</a>,
+            title: 'Meal Name',
+            dataIndex: 'meal_name',
+            key: 'meal_name',
         },
         {
             title: 'Action',
             key: 'action',
-            render: (_, record) => (
+            render: (_, meal) => (
                 <a
-                    onClick={() => handleDelete(record.key)}
+                    onClick={() => handleDelete(meal.id)}
                     style={{ marginLeft: "50%", color: "red", fontSize: 22 }}
                 >
                     <DeleteOutlined />
@@ -62,9 +63,9 @@ export const Meals = () => {
 
     return (
         <>
-            <div style={{display:"flex", width:"100%", justifyContent:"space-between", padding:20}}>
-                <h1 style={{margin:"0 0"}}>Meals</h1>
-                <Button type="primary" onClick={setOpen} style={{margin:"0 20px 0 0"}}>
+            <div style={{ display: "flex", width: "100%", justifyContent: "space-between", padding: 20 }}>
+                <h1 style={{ margin: "0 0" }}>Meals</h1>
+                <Button type="primary" onClick={setOpen} style={{ margin: "0 20px 0 0" }}>
                     <PlusCircleOutlined />
                 </Button>
 
@@ -88,8 +89,8 @@ export const Meals = () => {
                 <Table
                     columns={columns}
                     dataSource={meals}
+                    rowKey="id"
                     style={{ maxWidth: 600 }}
-                    pagination={false}
                 />
             </div>
         </>

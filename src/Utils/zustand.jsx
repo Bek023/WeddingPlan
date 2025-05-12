@@ -169,7 +169,48 @@ const useModal = create((set) => ({
     closeOpen: () => set({ open: false }),
 }));
 
+// FOR meals
+const useMealsStore = create((set) => ({
+    meals: [],
 
+    getMeals: async () => {
+        try {
+            const res = await axios.get(`/meals`);
+            set({ meals: res.data.data || [] });
+        } catch (error) {
+            console.error("Failed to fetch meals", error);
+            set({ meals: [] });
+        }
+
+    },
+
+    addMeal: async ({ meal_name }) => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const user_id = user.id;
+        try {
+            const res = await axios.post(`/createmeal`, {
+                meal_name,
+                user_id,
+            });
+
+            set((state) => ({
+                meals: Array.isArray(state.meals)
+                    ? [...state.meals, res.data.data]
+                    : [res.data.data],
+            }));
+        } catch (error) {
+            console.error("Failed to create meal", error);
+        }
+    },
+
+    deleteMeal: async (id) => {
+        try {
+            await axios.delete(`/delmeal/${id}`);
+        } catch (error) {
+            console.error(" Failed to delete meal", error);
+        }
+    },
+}));
 
 
 export {
@@ -178,7 +219,8 @@ export {
     useAuthComponents,
     useModal,
     useData,
-    useCoupleStore
+    useCoupleStore,
+    useMealsStore
 };
 
 
