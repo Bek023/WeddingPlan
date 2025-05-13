@@ -213,6 +213,55 @@ const useMealsStore = create((set) => ({
 }));
 
 
+
+// For gallary
+
+
+const useGallary = create((set) => ({
+    gallaries: [],
+
+    getGallaries: async () => {
+        try {
+            const res = await axios.get('/gallaries');
+            set({ gallaries: res.data.data || [] });
+        } catch (err) {
+            console.error('Failed to fetch gallaries:', err);
+            set({ gallaries: [] });
+        }
+    },
+
+    addGallary: async (file) => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('user_id', user?.id);
+
+        try {
+            const res = await axios.post('/creategall', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            set((state) => ({
+                gallaries: [...state.gallaries, res.data.data],
+            }));
+        } catch (err) {
+            console.error('Failed to upload image:', err);
+        }
+    },
+
+    deleteGallary: async (id) => {
+        try {
+            await axios.delete(`/delgall/${id}`);
+            set((state) => ({
+                gallaries: state.gallaries.filter((img) => img.id !== id),
+            }));
+        } catch (err) {
+            console.error('Failed to delete gallary:', err);
+        }
+    },
+}));
+
+
 export {
     load,
     useComponents,
@@ -220,7 +269,8 @@ export {
     useModal,
     useData,
     useCoupleStore,
-    useMealsStore
+    useMealsStore,
+    useGallary
 };
 
 

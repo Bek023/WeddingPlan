@@ -15,21 +15,6 @@ body {
     background-color: rgb(217, 181, 214);
 }
 
-/* input:focus {
-    outline: none !important;
-}
-
-input:hover {
-    outline: none !important;
-}
-
-input:focus {
-    border: none !important;
-}
-
-input:hover {
-    outline: none !important;
-} */
 
 
 .inp2 {
@@ -51,4 +36,9 @@ input:hover {
 
 .ant-input-outlined:focus-within {
     border: 3px solid pink !important;
+}
+
+.ant-upload-list-item-container, .ant-upload{
+    height: 200px !important;
+    width: 200px !important;
 }
