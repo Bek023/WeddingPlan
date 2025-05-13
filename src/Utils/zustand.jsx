@@ -111,36 +111,48 @@ const useData = create((set) => ({
 
 const useCoupleStore = create((set) => ({
     coupleData: null,
-    getCoupleData: async () => {
 
+    getCoupleData: async () => {
         try {
-            const res = await axios.get(`/couple-about`);
-            set({ coupleData: res.data });
+            const res = await axios.get('/couple-about');
+            set({ coupleData: res.data.data });
         } catch (err) {
-            console.error('Error fetching couple data:', err);
-        } finally {
-            set({ loading: false });
+            console.error('Failed to fetch couple data:', err);
         }
     },
-    updateCoupleData: async (data) => {
-        const formData = new FormData();
-        const user = JSON.parse(localStorage.getItem("user"));
-        formData.append("husband_name", data.husband_name);
-        formData.append("husband_about", data.husband_about);
-        formData.append("husband_img", data.husband_img[0]);
-        formData.append("wife_name", data.wife_name);
-        formData.append("wife_about", data.wife_about);
-        formData.append("wife_img", data.wife_img[0]);
-        formData.append("couple_img", data.couple_img[0]);
-        formData.append("user_id", user.id);
 
+    updateCoupleData: async (data) => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const formData = new FormData();
+
+        formData.append('user_id', user?.id);
+        formData.append('husband_name', data.husband_name);
+        formData.append('wife_name', data.wife_name);
+        formData.append('husband_about', data.husband_about);
+        formData.append('wife_about', data.wife_about);
+
+        // Fayllarni qo'shish
+        if (data.husband_img && data.husband_img[0]?.originFileObj) {
+            formData.append('husband_img', data.husband_img[0].originFileObj);
+        }
+        if (data.wife_img && data.wife_img[0]?.originFileObj) {
+            formData.append('wife_img', data.wife_img[0].originFileObj);
+        }
+        if (data.wife_img && data.wife_img[0]?.originFileObj) {
+            formData.append('couple_img', data.wife_img[0].originFileObj);
+        }
 
         try {
-            await axios.post(`/couple-about`, formData);
+            const res = await axios.post('/couple-about', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            set({ coupleData: res.data.data });
+            return true;
         } catch (err) {
-            console.error('Update failed:', err);
-        } finally {
-            set({ loading: false });
+            console.error('Failed to update couple data:', err);
+            return false;
         }
     },
 }));
@@ -238,7 +250,7 @@ const useGallary = create((set) => ({
 
         try {
             const res = await axios.post('/creategall', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
+                headers: { 'Content-Type': 'application/json' },
             });
 
             set((state) => ({
@@ -262,6 +274,49 @@ const useGallary = create((set) => ({
 }));
 
 
+// for company
+const useCompany = create((set) => ({
+    Company: [],
+
+    getCompany: async () => {
+        try {
+            const res = await axios.get('/companies');
+            set({ Company: res.data.data || [] });
+        } catch (err) {
+            console.error('Failed to fetch companies:', err);
+            set({ Company: [] });
+        }
+    },
+
+    addCompany: async (formData) => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            formData.append('user_id', user.id);
+
+            const res = await axios.post('/createcomp', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            set((state) => ({
+                Company: [...state.Company, res.data.data],
+            }));
+        } catch (err) {
+            console.error('Failed to add company:', err);
+        }
+    },
+
+    deleteCompany: async (id) => {
+        try {
+            await axios.delete(`/delcomp/${id}`);
+            set((state) => ({
+                Company: state.Company.filter((item) => item.id !== id),
+            }));
+        } catch (err) {
+            console.error('Failed to delete company:', err);
+        }
+    },
+}));
+
 export {
     load,
     useComponents,
@@ -270,7 +325,8 @@ export {
     useData,
     useCoupleStore,
     useMealsStore,
-    useGallary
+    useGallary,
+    useCompany
 };
 
 

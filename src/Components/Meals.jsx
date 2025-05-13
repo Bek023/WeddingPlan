@@ -1,7 +1,7 @@
 
 import { Button, Input, Modal, Table, message } from 'antd';
 import { DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { useMealsStore, useModal, load } from '../Utils/zustand';
 
 

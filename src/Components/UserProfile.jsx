@@ -1,4 +1,4 @@
-import { useData, useMealsStore, useGallary } from "../Utils/zustand";
+import { useData, useMealsStore, useGallary, useCompany } from "../Utils/zustand";
 import style from "./Style/Profile.module.css";
 import SetEdit from "./SetEdit";
 import { useLayoutEffect } from "react";
@@ -7,11 +7,13 @@ export const UserProfile = () => {
     const { data, getData } = useData();
     const { getMeals } = useMealsStore();
     const { getGallaries } = useGallary();
+    const { getCompany } = useCompany();
 
     useLayoutEffect(() => {
         getData();
         getMeals();
         getGallaries();
+        getCompany();
     }, []);
 
 

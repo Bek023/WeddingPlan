@@ -21,7 +21,7 @@ Fields:
 •	- user_id
 •	- husband_name
 •	- wife_name
-•	- husband_about     -->done
+•	- husband_about     
 •	- wife_about
 •	- husband_img
 •	- wife_img
