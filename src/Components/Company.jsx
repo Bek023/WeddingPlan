@@ -1,4 +1,3 @@
-
 import {
     Modal,
     Table,
@@ -12,6 +11,7 @@ import {
 } from 'antd';
 import { DeleteOutlined, PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { useCompany, useModal, load } from '../Utils/zustand';
+import { useEffect, useState } from 'react';
 
 const { TextArea } = Input;
 
@@ -21,6 +21,7 @@ export const Company = () => {
     const { SetLoading, RemoveLoading } = load();
     const { Company, getCompany, addCompany, deleteCompany } = useCompany();
 
+    const [fileList, setFileList] = useState([]);
 
     const handleAdd = () => {
         SetLoading();
@@ -34,8 +35,9 @@ export const Company = () => {
             await addCompany(formData);
             getCompany();
             form.resetFields();
+            setFileList([]);
             closeOpen();
-            setTimeout(() => { RemoveLoading() }, 700)
+            setTimeout(() => { RemoveLoading() }, 700);
             message.success("Company added!");
         });
     };
@@ -44,7 +46,7 @@ export const Company = () => {
         SetLoading();
         await deleteCompany(id);
         getCompany();
-        setTimeout(() => { RemoveLoading() }, 700)
+        setTimeout(() => { RemoveLoading() }, 700);
         message.success("Deleted successfully!");
     };
 
@@ -82,6 +84,13 @@ export const Company = () => {
         },
     ];
 
+    const uploadButton = (
+        <button style={{ border: 0, background: 'none' }} type="button">
+            <UploadOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </button>
+    );
+
     return (
         <div style={{ padding: 20 }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -101,7 +110,11 @@ export const Company = () => {
             <Modal
                 title="Add Company"
                 open={open}
-                onCancel={() => closeOpen()}
+                onCancel={() => {
+                    closeOpen();
+                    form.resetFields();
+                    setFileList([]);
+                }}
                 onOk={handleAdd}
                 okText="Save"
             >
@@ -139,10 +152,20 @@ export const Company = () => {
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
                         rules={[{ required: true, message: 'Upload an image' }]}
-                        
                     >
-                        <Upload name="logo" listType="picture-card" maxCount={1} beforeUpload={() => false}>
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        <Upload
+                            name="logo"
+                            listType="picture-card"
+                            beforeUpload={() => false}
+                            fileList={fileList}
+                            onChange={({ fileList: newFileList }) => {
+                                beforeUpload: () => false,
+                                setFileList(newFileList);
+                                form.setFieldsValue({ comp_img: newFileList });
+                            }}
+                            maxCount={1}
+                        >
+                            {fileList.length >= 1 ? null : uploadButton}
                         </Upload>
                     </Form.Item>
                 </Form>

@@ -1,94 +1,167 @@
+import { useEffect, useState } from 'react';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+    Form,
+    Upload,
+    Button,
+    message,
+    Card,
+    Image,
+    Popconfirm,
+    Row,
+    Col,
+} from 'antd';
+import { useGallary } from '../Utils/zustand';
 
-// var __awaiter =
-//     (this && this.__awaiter) ||
-//     function (thisArg, _arguments, P, generator) {
-//         function adopt(value) {
-//             return value instanceof P
-//                 ? value
-//                 : new P(function (resolve) {
-//                     resolve(value);
-//                 });
-//         }
-//         return new (P || (P = Promise))(function (resolve, reject) {
-//             function fulfilled(value) {
-//                 try {
-//                     step(generator.next(value));
-//                 } catch (e) {
-//                     reject(e);
-//                 }
-//             }
-//             function rejected(value) {
-//                 try {
-//                     step(generator['throw'](value));
-//                 } catch (e) {
-//                     reject(e);
-//                 }
-//             }
-//             function step(result) {
-//                 result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-//             }
-//             step((generator = generator.apply(thisArg, _arguments || [])).next());
-//         });
-//     };
-import { useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Image, Upload } from 'antd';
-const getBase64 = file =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
+const normFile = (e) => {
+    if (Array.isArray(e)) return e;
+    return e?.fileList;
+};
+
 export const Gallery = () => {
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
+    const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
-    const handlePreview = file =>
-        __awaiter(void 0, void 0, void 0, function* () {
-            if (!file.url && !file.preview) {
-                file.preview = yield getBase64(file.originFileObj);
+
+    const { gallaries, getGallaries, addGallary, deleteGallary } = useGallary();
+
+    useEffect(() => {
+        getGallaries();
+    }, []);
+
+    const handleChange = ({ fileList: newList }) => {
+        setFileList(newList);
+        form.setFieldsValue({ comp_img: newList });
+    };
+
+    const handleSubmit = async () => {
+        if (fileList.length === 0) {
+            return message.error("Please select at least one image to upload.");
+        }
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user?.id) {
+            return message.error("User not found!");
+        }
+        let file = [];
+        for (let originFileObj of fileList) {      
+            file.push(originFileObj);;
+            if (!file) {
+                return message.error("Invalid file upload!");
             }
-            setPreviewImage(file.url || file.preview);
-            setPreviewOpen(true);
-        });
-    const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+            if (file.length === 2) {
+                await addGallary(file);
+                message.success("Images uploaded successfully!");
+            }
+        }
+        setFileList([]);
+        form.resetFields();
+        getGallaries();
+    };
+
+    const handleDelete = async (id) => {
+        await deleteGallary(id);
+        message.success("Image deleted!");
+        getGallaries();
+    };
+
     const uploadButton = (
-        <button style={{ border: 0, background: 'none' }} type="button">
+        <div>
             <PlusOutlined />
             <div style={{ marginTop: 8 }}>Upload</div>
-        </button>
+        </div>
     );
-    return (
-        <>
-            <div style={{ padding: 20 }}>
-                <h1 style={{ marginBottom: 10 }}>Gallary</h1>
-                <span style={{ color: "red" }}>You can upload maximum 8 photos</span>
-                <div style={{ display: "flex", justifyContent: "start", padding: 10 }}>
 
-                    <Upload
-                        action="https://100m.uz/api/creategall"
-                        listType="picture-card"
-                        fileList={fileList}
-                        onPreview={handlePreview}
-                        onChange={handleChange}
-                        style={{ height: 200, width: 200 }}
+    return (
+        <div style={{ padding: 40, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
+            <Card
+                title="Gallery"
+                style={{
+                    maxWidth: 900,
+                    margin: 'auto',
+                    borderRadius: 10,
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+                }}
+            >
+                <p style={{ color: "red", marginBottom: 20 }}>
+                    You can upload between 1 and 8 images at once.
+                </p>
+
+                <Form form={form} layout="vertical">
+                    <Form.Item
+                        label="Upload Images"
+                        name="comp_img"
+                        valuePropName="fileList"
+                        getValueFromEvent={normFile}
+                        rules={[{ required: true, message: 'Please upload at least one image' }]}
                     >
-                        {fileList.length >= 8 ? null : uploadButton}
-                    </Upload>
-                    {previewImage && (
-                        <Image
-                            style={{ height: 200, width: 200 }}
-                            preview={{
-                                visible: previewOpen,
-                                onVisibleChange: visible => setPreviewOpen(visible),
-                                afterOpenChange: visible => !visible && setPreviewImage(''),
-                            }}
-                            src={previewImage}
-                        />
-                    )}
-                </div>
-            </div>
-        </>
+                        <Upload
+                            listType="picture-card"
+                            beforeUpload={() => false}
+                            fileList={fileList}
+                            onChange={handleChange}
+                            maxCount={8}
+                            multiple
+                        >
+                            {fileList.length >= 8 ? null : uploadButton}
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item style={{ textAlign: 'center', marginTop: 10 }}>
+                        <Button
+                            type="primary"
+                            onClick={handleSubmit}
+                            disabled={fileList.length === 0 || fileList.length > 8}
+                        >
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Card>
+
+            <Card
+                title="Uploaded Images"
+                style={{
+                    maxWidth: 900,
+                    margin: '40px auto 0',
+                    borderRadius: 10,
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+                }}
+            >
+                <Row gutter={[16, 16]}>
+                    {gallaries.map((img) => (
+                        <Col xs={12} sm={8} md={6} key={img.id}>
+                            <div style={{ position: 'relative' }}>
+                                <Image
+                                    src={img.couple_gallary}
+                                    alt="gallery"
+                                    width="100%"
+                                    height={150}
+                                    style={{ objectFit: 'cover', borderRadius: 10 }}
+                                />
+                                <Popconfirm
+                                    title="Are you sure to delete this image?"
+                                    onConfirm={() => handleDelete(img.id)}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <DeleteOutlined
+                                        style={{
+                                            position: 'absolute',
+                                            top: 8,
+                                            right: 8,
+                                            color: 'red',
+                                            fontSize: 20,
+                                            backgroundColor: '#fff',
+                                            borderRadius: '50%',
+                                            padding: 4,
+                                            cursor: 'pointer',
+                                        }}
+                                    />
+                                </Popconfirm>
+                            </div>
+                        </Col>
+                    ))}
+                </Row>
+            </Card>
+        </div>
     );
 };

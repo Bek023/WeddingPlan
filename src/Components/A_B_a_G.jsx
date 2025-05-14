@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Style/A_B_a_G.module.css';
 import {
     Button,
@@ -21,15 +21,16 @@ const A_B_a_G = () => {
     } = useCoupleStore();
     const { SetLoading, RemoveLoading } = load();
 
+    const [husbandFileList, setHusbandFileList] = useState([]);
+    const [wifeFileList, setWifeFileList] = useState([]);
+
     useEffect(() => {
         SetLoading();
         getCoupleData();
     }, []);
-    useEffect(()=>{console.log(coupleData)},[coupleData])
 
     useEffect(() => {
         if (coupleData) {
-            // Rasm bor bo‘lsa, uni Upload formatiga o‘tkazamiz
             const husbandImgList = coupleData.husband_img
                 ? [{
                     uid: '-1',
@@ -47,6 +48,9 @@ const A_B_a_G = () => {
                     url: coupleData.wife_img,
                 }]
                 : [];
+
+            setHusbandFileList(husbandImgList);
+            setWifeFileList(wifeImgList);
 
             form.setFieldsValue({
                 husband_name: coupleData.husband_name,
@@ -67,69 +71,84 @@ const A_B_a_G = () => {
         RemoveLoading();
     };
 
-    const uploadProps = {
+    const uploadProps = (fileList, setFileList) => ({
         beforeUpload: () => false,
+        fileList,
+        onChange: ({ fileList: newFileList }) => {
+            const latestFile = newFileList.slice(-1); 
+            setFileList(latestFile);
+            form.setFieldsValue({ [setFileList === setHusbandFileList ? 'husband_img' : 'wife_img']: latestFile });
+        },
         listType: 'picture-card',
         maxCount: 1,
-    };
+    });
+
+    const uploadButton = (
+        <button style={{ border: 0, background: 'none' }} type="button">
+            <UploadOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </button>
+    );
 
     return (
         <>
             <h1 className={style.title}>Couple About</h1>
             <div className={style.block}>
-                <Form
-                    form={form}
-                    layout="vertical"
-                    onFinish={handleSubmit}
-                    style={{ maxWidth: 700 }}
-                >
-                    <div className={style.from}>
-                        <div>
-                            <Form.Item label="Name of Groom" name="husband_name" rules={[{ required: true }]}>
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Name of Bride" name="wife_name" rules={[{ required: true }]}>
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="About of Groom" name="husband_about" rules={[{ required: true }]}>
-                                <Input.TextArea maxLength={150} rows={3} />
-                            </Form.Item>
-                            <Form.Item label="About of Bride" name="wife_about" rules={[{ required: true }]}>
-                                <Input.TextArea maxLength={150} rows={3} />
-                            </Form.Item>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        onFinish={handleSubmit}
+                        style={{ maxWidth: 700 }}
+                    >
+                        <div className={style.from}>
+                            <div>
+                                <Form.Item label="Name of Groom" name="husband_name" rules={[{ required: true }]}>
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item label="Name of Bride" name="wife_name" rules={[{ required: true }]}>
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item label="About of Groom" name="husband_about" rules={[{ required: true }]}>
+                                    <Input.TextArea maxLength={150} rows={3} />
+                                </Form.Item>
+                                <Form.Item label="About of Bride" name="wife_about" rules={[{ required: true }]}>
+                                    <Input.TextArea maxLength={150} rows={3} />
+                                </Form.Item>
+                            </div>
+                            <div>
+                                <Form.Item
+                                    label="Groom's photo"
+                                    name="husband_img"
+                                    valuePropName="fileList"
+                                    getValueFromEvent={normFile}
+                                    rules={[{ required: true }]}
+                                >
+                                    <Upload {...uploadProps(husbandFileList, setHusbandFileList)}>
+                                        {husbandFileList.length >= 1 ? null : uploadButton}
+                                    </Upload>
+                                </Form.Item>
+                                <Form.Item
+                                    label="Bride's photo"
+                                    name="wife_img"
+                                    valuePropName="fileList"
+                                    getValueFromEvent={normFile}
+                                    rules={[{ required: true }]}
+                                >
+                                    <Upload {...uploadProps(wifeFileList, setWifeFileList)}>
+                                        {wifeFileList.length >= 1 ? null : uploadButton}
+                                    </Upload>
+                                </Form.Item>
+                            </div>
                         </div>
-                        <div>
-                            <Form.Item
-                                label="Groom's photo"
-                                name="husband_img"
-                                valuePropName="fileList"
-                                getValueFromEvent={normFile}
-                                rules={[{ required: true }]}
-                            >
-                                <Upload {...uploadProps}>
-                                    <Button icon={<UploadOutlined />}>Upload</Button>
-                                </Upload>
-                            </Form.Item>
-                            <Form.Item
-                                label="Bride's photo"
-                                name="wife_img"
-                                valuePropName="fileList"
-                                getValueFromEvent={normFile}
-                                rules={[{ required: true }]}
-                            >
-                                <Upload {...uploadProps}>
-                                    <Button icon={<UploadOutlined />}>Upload</Button>
-                                </Upload>
-                            </Form.Item>
-                        </div>
-                    </div>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </div>
+                        <Form.Item style={{ marginLeft: "50%" }}>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </div >
         </>
     );
 };

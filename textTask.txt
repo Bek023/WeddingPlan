@@ -21,7 +21,7 @@ Fields:
 •	- user_id
 •	- husband_name
 •	- wife_name
-•	- husband_about     
+•	- husband_about         -->done
 •	- wife_about
 •	- husband_img
 •	- wife_img
@@ -38,14 +38,14 @@ Table: couple_story
 5. Couple Gallary
 Table: couple_gallary
 •	- id
-•	- user_id
+•	- user_id               -->done
 •	- couple_gallary
 6. Company
 Table: company
 •	- id
 •	- user_id
 •	- comp_name
-•	- comp_img
+•	- comp_img          -->done
 •	- comp_desc
 •	- comp_worked_date
 7. Meal
@@ -80,7 +80,7 @@ Table: wedding_day_plan
 COUPLE-ABOUT
 •	GET /couple-about
 •	GET /couple-about-just
-•	POST /couple-about
+•	POST /couple-about          -->done
 •	PUT /couple-about/{id}
 •	DELETE /couple-about/{id}
 
@@ -104,12 +104,12 @@ MEAL
 
 GALLARIES
 •	GET /gallaries
-•	POST /creategall
+•	POST /creategall            -->done
 •	DELETE /delgall/{id}
 
 COMPANY
 •	GET /companies
-•	POST /createcomp
+•	POST /createcomp        -->done
 •	PUT /updatecomp/{id}
 •	DELETE /delcomp/{id}
 

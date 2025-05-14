@@ -68,10 +68,6 @@ const useData = create((set) => ({
     data: null,
     getData: () => {
         const user = JSON.parse(localStorage.getItem("user"));
-        if (!user) {
-            console.warn("User topilmadi!");
-            return;
-        }
 
         axios.get(`/user/${user.username}`)
             .then((response) => {
@@ -247,11 +243,11 @@ const useGallary = create((set) => ({
         const formData = new FormData();
         formData.append('image', file);
         formData.append('user_id', user?.id);
-
+        for (const [key, value] of formData) {
+            console.log(value);
+        }
         try {
-            const res = await axios.post('/creategall', formData, {
-                headers: { 'Content-Type': 'application/json' },
-            });
+            const res = await axios.post('/creategall', formData);
 
             set((state) => ({
                 gallaries: [...state.gallaries, res.data.data],
@@ -275,6 +271,7 @@ const useGallary = create((set) => ({
 
 
 // for company
+
 const useCompany = create((set) => ({
     Company: [],
 
@@ -317,6 +314,61 @@ const useCompany = create((set) => ({
     },
 }));
 
+
+// FOR COUPLE STORY 
+const useLoveStore = create((set) => ({
+    Story: [],
+
+    getStory: async () => {
+        try {
+            const res = await axios.get('/couple-story');
+            set({ Story: res.data.data || [] });
+        } catch (err) {
+            console.error('Failed to fetch Story:', err);
+            set({ Story: [] });
+        }
+    },
+
+
+    addStory: async (formData) => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            formData.append('user_id', user.id);
+
+            const res = await axios.post('/couple-story', formData)
+
+            set((state) => ({
+                Story: [...state.Story, res.data.data],
+            }));
+        } catch (err) {
+            console.error('Failed to add Story:', err);
+        }
+    },
+    updateStory: async (formData) => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            formData.append('user_id', user.id);
+
+            const res = await axios.put('/couple-story', formData)
+
+            set((state) => ({
+                Story: [...state.Story, res.data.data],
+            }));
+        } catch (err) {
+            console.error('Failed to add Story:', err);
+        }
+    },
+    deleteStory: async (id) => {
+        try {
+            await axios.delete(`/couple-story/${id}`);
+            set((state) => ({
+                Story: state.Story.filter((item) => item.id !== id),
+            }));
+        } catch (err) {
+            console.error('Failed to delete company:', err);
+        }
+    },
+}));
 export {
     load,
     useComponents,
@@ -326,7 +378,8 @@ export {
     useCoupleStore,
     useMealsStore,
     useGallary,
-    useCompany
+    useCompany,
+    useLoveStore
 };
 
 
