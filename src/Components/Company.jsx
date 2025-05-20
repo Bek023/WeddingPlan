@@ -7,11 +7,12 @@ import {
     Input,
     Upload,
     Image,
-    message
+    message,
 } from 'antd';
 import { DeleteOutlined, PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { useCompany, useModal, load } from '../Utils/zustand';
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 const { TextArea } = Input;
 
@@ -22,6 +23,10 @@ export const Company = () => {
     const { Company, getCompany, addCompany, deleteCompany } = useCompany();
 
     const [fileList, setFileList] = useState([]);
+
+    useEffect(() => {
+        getCompany();
+    }, []);
 
     const handleAdd = () => {
         SetLoading();
@@ -37,7 +42,9 @@ export const Company = () => {
             form.resetFields();
             setFileList([]);
             closeOpen();
-            setTimeout(() => { RemoveLoading() }, 700);
+            setTimeout(() => {
+                RemoveLoading();
+            }, 700);
             message.success("Company added!");
         });
     };
@@ -46,7 +53,9 @@ export const Company = () => {
         SetLoading();
         await deleteCompany(id);
         getCompany();
-        setTimeout(() => { RemoveLoading() }, 700);
+        setTimeout(() => {
+            RemoveLoading();
+        }, 700);
         message.success("Deleted successfully!");
     };
 
@@ -67,7 +76,14 @@ export const Company = () => {
         {
             title: 'Logo',
             dataIndex: 'comp_img',
-            render: (comp_img) => <Image src={comp_img} width={70} height={70} />,
+            render: (comp_img) => (
+                <Image
+                    src={`https://100m.uz/${comp_img}`}
+                    width={70}
+                    height={70}
+                    alt="Company Logo"
+                />
+            ),
         },
         {
             title: 'Date',
@@ -159,7 +175,6 @@ export const Company = () => {
                             beforeUpload={() => false}
                             fileList={fileList}
                             onChange={({ fileList: newFileList }) => {
-                                beforeUpload: () => false,
                                 setFileList(newFileList);
                                 form.setFieldsValue({ comp_img: newFileList });
                             }}

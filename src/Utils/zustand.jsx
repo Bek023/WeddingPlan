@@ -59,7 +59,9 @@ const useAuthComponents = create((set) => ({
 }));
 
 
+// user id 
 
+let user = null;
 
 // user data 
 
@@ -67,7 +69,7 @@ const useData = create((set) => ({
 
     data: null,
     getData: () => {
-        const user = JSON.parse(localStorage.getItem("user"));
+        user = JSON.parse(localStorage.getItem("user"));
 
         axios.get(`/user/${user.username}`)
             .then((response) => {
@@ -78,7 +80,6 @@ const useData = create((set) => ({
             });
     },
     updateUser: async (newData) => {
-        const user = JSON.parse(localStorage.getItem("user"));
         const formData = new FormData();
         formData.append("fullname", newData.fullname);
         formData.append("email", newData.email);
@@ -110,7 +111,7 @@ const useCoupleStore = create((set) => ({
 
     getCoupleData: async () => {
         try {
-            const res = await axios.get('/couple-about');
+            const res = await axios.get(`/about/${user.id}`);
             set({ coupleData: res.data.data });
         } catch (err) {
             console.error('Failed to fetch couple data:', err);
@@ -118,7 +119,6 @@ const useCoupleStore = create((set) => ({
     },
 
     updateCoupleData: async (data) => {
-        const user = JSON.parse(localStorage.getItem('user'));
         const formData = new FormData();
 
         formData.append('user_id', user?.id);
@@ -183,7 +183,7 @@ const useMealsStore = create((set) => ({
 
     getMeals: async () => {
         try {
-            const res = await axios.get(`/meals`);
+            const res = await axios.get(`/meal/${user.id}`);
             set({ meals: res.data.data || [] });
         } catch (error) {
             console.error("Failed to fetch meals", error);
@@ -193,7 +193,6 @@ const useMealsStore = create((set) => ({
     },
 
     addMeal: async ({ meal_name }) => {
-        const user = JSON.parse(localStorage.getItem("user"));
         const user_id = user.id;
         try {
             const res = await axios.post(`/createmeal`, {
@@ -230,7 +229,8 @@ const useGallary = create((set) => ({
 
     getGallaries: async () => {
         try {
-            const res = await axios.get('/gallaries');
+            const user = JSON.parse(localStorage.getItem('user'));
+            const res = await axios.get(`/gallary/${user.id}`);
             set({ gallaries: res.data.data || [] });
         } catch (err) {
             console.error('Failed to fetch gallaries:', err);
@@ -238,23 +238,30 @@ const useGallary = create((set) => ({
         }
     },
 
-    addGallary: async (file) => {
+    addGallary: async (files) => {
         const user = JSON.parse(localStorage.getItem('user'));
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('user_id', user?.id);
-        for (const [key, value] of formData) {
-            console.log(value);
-        }
-        try {
-            const res = await axios.post('/creategall', formData);
+        const uploadedImages = [];
 
-            set((state) => ({
-                gallaries: [...state.gallaries, res.data.data],
-            }));
-        } catch (err) {
-            console.error('Failed to upload image:', err);
+        for (let file of files) {
+            const formData = new FormData();
+            formData.append('image', file.originFileObj);
+            formData.append('user_id', user?.id);
+
+            try {
+                const res = await axios.post('/creategall', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                uploadedImages.push(res.data.data);
+            } catch (err) {
+                console.error('Failed to upload image:', err);
+            }
         }
+
+        set((state) => ({
+            gallaries: [...state.gallaries, ...uploadedImages],
+        }));
     },
 
     deleteGallary: async (id) => {
@@ -269,7 +276,6 @@ const useGallary = create((set) => ({
     },
 }));
 
-
 // for company
 
 const useCompany = create((set) => ({
@@ -277,7 +283,7 @@ const useCompany = create((set) => ({
 
     getCompany: async () => {
         try {
-            const res = await axios.get('/companies');
+            const res = await axios.get(`company/${user.id}`);
             set({ Company: res.data.data || [] });
         } catch (err) {
             console.error('Failed to fetch companies:', err);
@@ -321,7 +327,7 @@ const useLoveStore = create((set) => ({
 
     getStory: async () => {
         try {
-            const res = await axios.get('/couple-story');
+            const res = await axios.get(`/story/${user.id}`);
             set({ Story: res.data.data || [] });
         } catch (err) {
             console.error('Failed to fetch Story:', err);
@@ -332,8 +338,10 @@ const useLoveStore = create((set) => ({
 
     addStory: async (formData) => {
         try {
-            const user = JSON.parse(localStorage.getItem('user'));
             formData.append('user_id', user.id);
+            for (const [key, value] of formData) {
+                console.log(`${key}: ${value}`);
+            }
 
             const res = await axios.post('/couple-story', formData)
 
@@ -346,7 +354,6 @@ const useLoveStore = create((set) => ({
     },
     updateStory: async (formData) => {
         try {
-            const user = JSON.parse(localStorage.getItem('user'));
             formData.append('user_id', user.id);
 
             const res = await axios.put('/couple-story', formData)

@@ -21,7 +21,6 @@ const normFile = (e) => {
 export const Gallery = () => {
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
-
     const { gallaries, getGallaries, addGallary, deleteGallary } = useGallary();
 
     useEffect(() => {
@@ -37,21 +36,14 @@ export const Gallery = () => {
         if (fileList.length === 0) {
             return message.error("Please select at least one image to upload.");
         }
+
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user?.id) {
             return message.error("User not found!");
         }
-        let file = [];
-        for (let originFileObj of fileList) {      
-            file.push(originFileObj);;
-            if (!file) {
-                return message.error("Invalid file upload!");
-            }
-            if (file.length === 2) {
-                await addGallary(file);
-                message.success("Images uploaded successfully!");
-            }
-        }
+
+        await addGallary(fileList);
+        message.success("Images uploaded successfully!");
         setFileList([]);
         form.resetFields();
         getGallaries();
@@ -131,7 +123,11 @@ export const Gallery = () => {
                         <Col xs={12} sm={8} md={6} key={img.id}>
                             <div style={{ position: 'relative' }}>
                                 <Image
-                                    src={img.couple_gallary}
+                                    src={
+                                        img?.couple_gallary?.startsWith('http')
+                                            ? img.couple_gallary
+                                            : `https://100m.uz/${img.couple_gallary}`
+                                    }
                                     alt="gallery"
                                     width="100%"
                                     height={150}

@@ -31,7 +31,7 @@ Table: couple_story
 •	- user_id
 •	- img
 •	- title
-•	- description  
+•	- description           --> done 
 •	- day
 •	- month
 •	- year

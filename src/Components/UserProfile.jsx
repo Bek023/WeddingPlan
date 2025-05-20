@@ -1,4 +1,4 @@
-import { useData, useMealsStore, useGallary, useCompany, useLoveStore } from "../Utils/zustand";
+import { useData, useMealsStore, useGallary, useCompany, useLoveStore, useCoupleStore } from "../Utils/zustand";
 import style from "./Style/Profile.module.css";
 import SetEdit from "./SetEdit";
 import { useLayoutEffect } from "react";
@@ -9,6 +9,7 @@ export const UserProfile = () => {
     const { getGallaries } = useGallary();
     const { getCompany } = useCompany();
     const { getStory } = useLoveStore();
+    const { getCoupleData } = useCoupleStore();
 
     useLayoutEffect(() => {
         getData();
@@ -16,6 +17,7 @@ export const UserProfile = () => {
         getGallaries();
         getCompany();
         getStory();
+        getCoupleData();
     }, []);
 
 

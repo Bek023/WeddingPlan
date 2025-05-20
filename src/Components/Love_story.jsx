@@ -7,12 +7,12 @@ import {
     Input,
     Upload,
     Image,
-    message,
-    InputNumber
+    message
 } from 'antd';
 import { DeleteOutlined, PlusCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { useLoveStore, useModal, load } from '../Utils/zustand';
 import { useEffect, useState } from 'react';
+import moment from 'moment';
 
 const { TextArea } = Input;
 
@@ -24,24 +24,47 @@ export const Love_story = () => {
 
     const [fileList, setFileList] = useState([]);
 
+    useEffect(() => {
+        getStory();
+    }, []);
+
     const handleAdd = () => {
         SetLoading();
         form.validateFields().then(async (values) => {
+            if (!values.img || values.img.length === 0) {
+                message.error("Please upload an image.");
+                RemoveLoading();
+                return;
+            }
+
+            const date = values.date;
+            const day = date.date();
+            const monthName = date.format('MMMM');
+            const year = date.year();
+
             const formData = new FormData();
             formData.append('title', values.title);
             formData.append('description', values.description);
-            formData.append('day', values.day);
-            formData.append('month', values.month);
-            formData.append('month', values.month);
-            formData.append('img', values.img[0].originFileObj);
+            formData.append('day', day);
+            formData.append('month', monthName);
+            formData.append('year', year);
+            formData.append('img', values.img[0]?.originFileObj);
+            console.log(values.img[0]?.originFileObj)
 
-            await addStory(formData);
+            const res = await addStory(formData);
             getStory();
             form.resetFields();
             setFileList([]);
             closeOpen();
             setTimeout(() => { RemoveLoading() }, 700);
-            message.success("Story added!");
+            if (res) {
+                message.success("Story added!");
+            } else {
+                message.error("Story not added!");
+            }
+        }).catch(() => {
+            message.error("Story not added!");
+            RemoveLoading();
         });
     };
 
@@ -61,7 +84,7 @@ export const Love_story = () => {
     const columns = [
         {
             title: 'Title',
-            dataIndex: 'title ',
+            dataIndex: 'title',
         },
         {
             title: 'About',
@@ -129,10 +152,7 @@ export const Love_story = () => {
                 onOk={handleAdd}
                 okText="Save"
             >
-                <Form
-                    form={form}
-                    layout="vertical"
-                >
+                <Form form={form} layout="vertical">
                     <Form.Item
                         label="Title"
                         name="title"
@@ -150,25 +170,11 @@ export const Love_story = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label="Day"
-                        name="day"
-                        rules={[{ required: true, message: 'Select day' }]}
+                        label="Date"
+                        name="date"
+                        rules={[{ required: true, message: 'Select date' }]}
                     >
                         <DatePicker style={{ width: '100%' }} />
-                    </Form.Item>
-                    <Form.Item
-                        label="Month"
-                        name="month"
-                        rules={[{ required: true, message: 'Select month' }]}
-                    >
-                        <DatePicker style={{ width: '100%' }} />
-                    </Form.Item>
-                    <Form.Item
-                        label="Year"
-                        name="year"
-                        rules={[{ required: true, message: 'Select year' }]}
-                    >
-                        <InputNumber min={2000} max={2025}   />
                     </Form.Item>
 
                     <Form.Item
@@ -179,14 +185,13 @@ export const Love_story = () => {
                         rules={[{ required: true, message: 'Upload an image' }]}
                     >
                         <Upload
-                            name="logo"
+                            name="img"
                             listType="picture-card"
-                            beforeUpload={() => false}
+                            beforeUpload={() => false} // Serverga avtomatik ketmasin
                             fileList={fileList}
                             onChange={({ fileList: newFileList }) => {
-                                beforeUpload: () => false,
-                                    setFileList(newFileList);
-                                form.setFieldsValue({ comp_img: newFileList });
+                                setFileList(newFileList);
+                                form.setFieldsValue({ img: newFileList });
                             }}
                             maxCount={1}
                         >
